@@ -19,7 +19,7 @@ public class Spawner : MonoBehaviour
 {
     public int currentWave = 1;
     public List<WaveSettings> spawnObjects;
-
+    public List<GameObject> spawnPoints; 
 
     public void NextWave()
     {
@@ -56,7 +56,9 @@ public class Spawner : MonoBehaviour
             elm.timeSinceSpawn += Time.deltaTime;
             if (elm.timeSinceSpawn >= elm.timeToSpawn)
             {
-                Instantiate(elm.objectToSpawn, transform.position, Quaternion.identity);
+                var spawnIndex = Random.Range(0, spawnPoints.Count - 1);
+                var spawnLocation = spawnPoints[spawnIndex];
+                Instantiate(elm.objectToSpawn, spawnLocation.transform.position, Quaternion.identity);
                 elm.timeSinceSpawn = 0;
             }
         }
