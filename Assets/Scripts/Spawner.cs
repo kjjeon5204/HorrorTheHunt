@@ -10,10 +10,15 @@ public class SpawnerSettings
 
 }
 [System.Serializable]
+public class WaveSettings
+{
+    public List<SpawnerSettings> contents;
+}
+[System.Serializable]
 public class Spawner : MonoBehaviour
 {
     public int currentWave = 1;
-    public List<List<SpawnerSettings>> spawnObjects;
+    public List<WaveSettings> spawnObjects;
 
 
     public void NextWave()
@@ -46,7 +51,7 @@ public class Spawner : MonoBehaviour
 
     void FixedUpdate()
     {
-        foreach (var elm in spawnObjects[currentWave-1])
+        foreach (var elm in spawnObjects[currentWave-1].contents)
         {
             elm.timeSinceSpawn += Time.deltaTime;
             if (elm.timeSinceSpawn >= elm.timeToSpawn)
