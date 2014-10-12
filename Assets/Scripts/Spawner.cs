@@ -12,9 +12,28 @@ public class SpawnerSettings
 [System.Serializable]
 public class Spawner : MonoBehaviour
 {
-    
-    public List<SpawnerSettings> spawnObjects;
-    private float timeSinceUpdate = 0;
+    public int currentWave = 1;
+    public List<List<SpawnerSettings>> spawnObjects;
+
+
+    public void NextWave()
+    {
+        if (currentWave > spawnObjects.Count)
+        {
+            //we are at the end of all the waves,
+            //we may want to do something or other
+            //TODO: Handle this shit
+        }
+        currentWave++;
+
+    }
+    /// <summary>
+    /// go back to the beginning of all the waves
+    /// </summary>
+    public void ResetWaves()
+    {
+        currentWave = 1;
+    }
 	// Use this for initialization
 	void Start () {
 	
@@ -27,7 +46,7 @@ public class Spawner : MonoBehaviour
 
     void FixedUpdate()
     {
-        foreach (var elm in spawnObjects)
+        foreach (var elm in spawnObjects[currentWave-1])
         {
             elm.timeSinceSpawn += Time.deltaTime;
             if (elm.timeSinceSpawn >= elm.timeToSpawn)
@@ -37,4 +56,5 @@ public class Spawner : MonoBehaviour
             }
         }
     }
+    
 }
