@@ -9,7 +9,8 @@ public enum ObjectType
 
 public class NonMovingObject : MonoBehaviour {
     public int hp;
-    public int price;
+    public int buyPrice;
+    public int sellPrice;
 
     public ObjectType thisObjectType;
     public AnimationClip spawnAnimation;
