@@ -29,6 +29,7 @@ public class BuildLogic : MonoBehaviour {
 	public GameObject[] stuctureList;
 	IDictionary<string, GameObject> structureLibrary = new Dictionary<string, GameObject>();
     public TextMesh timerDisplay;
+    public TextMesh currencyDisplay;
 
 	//Tile structure
     public GameObject tilePrefab;
@@ -110,6 +111,16 @@ public class BuildLogic : MonoBehaviour {
         reset_tiles();
         timer = 120.0f;
         currency = newCurrency;
+        if (curClickData.hoveredUIObject != null)
+        {
+            curClickData.hoveredUIObject.GetComponent<BaseButton>().no_effect();
+            curClickData.hoveredUIObject = null;
+        }
+        if (curClickData.selectedUIObject != null)
+        {
+            curClickData.selectedUIObject.GetComponent<BaseButton>().no_effect();
+            curClickData.selectedUIObject = null;
+        }
 	}
 
 	public void end_build_phase() {
@@ -221,11 +232,9 @@ public class BuildLogic : MonoBehaviour {
                         curClickData.hoveredUIObject.GetComponent<BaseButton>().no_effect();
                         curClickData.hoveredUIObject = null;
                     }
-
                     curClickData.hoveredUIObject = hitDetector.collider.gameObject;
                     if ((curClickData.selectedUIObject == null || 
-                        curClickData.selectedUIObject != hitDetector.collider.gameObject) &&
-                        curClickData.hoveredUIObject != hitDetector.collider.gameObject) 
+                        curClickData.selectedUIObject != hitDetector.collider.gameObject)) 
                     {
                         //create hover effect
                         curClickData.hoveredUIObject.GetComponent<BaseButton>().hover_effect();
@@ -252,8 +261,12 @@ public class BuildLogic : MonoBehaviour {
                 curClickData.hoveredUIObject.GetComponent<BaseButton>().no_effect();
                 curClickData.hoveredUIObject = null;
             }
-            if (curClickData.hoveredUIObject != null)
+            if (curClickData.hoveredUIObject != null && curClickData.hoveredUIObject == curClickData.selectedUIObject)
+            {
                 curClickData.hoveredUIObject.GetComponent<BaseButton>().deactivate_hover_overlay();
+                curClickData.hoveredUIObject = null;
+
+            }
         }
     }
 
@@ -296,9 +309,28 @@ public class BuildLogic : MonoBehaviour {
 	void Update () {
         mouseDeltaPos = Input.mousePosition - previousMousePos;
         timer -= Time.deltaTime;
-        timerDisplay.text = ((int)(timer / 60)).ToString() + ":" + ((int)(timer % 60)).ToString();
+        //Update Displays
+        timerDisplay.text = ((int)(timer / 60)).ToString() +
+            ":";
+        if ((int)(timer % 60) < 10)
+        {
+            timerDisplay.text += ("0" + ((int)(timer % 60)).ToString());
+        }
+        else
+        {
+            timerDisplay.text += ((int)(timer % 60)).ToString();
+        }
+        currencyDisplay.text = currency.ToString();
+
         if (curClickData.hoveredUIObject == null)
+        {
             drag_camera_mouse();
+        }
+        else
+        {
+            Debug.Log("You are hovering oversomething!");
+        }
+
         if (Input.GetKeyUp(KeyCode.Mouse0))
         {
             //UI Handles
