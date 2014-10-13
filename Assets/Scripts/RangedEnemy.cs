@@ -7,7 +7,6 @@ public class RangedEnemy : Enemy
     public float Range = 20.0f;
     public float AttackRate = 1.0f;
     private float timeSinceAttack = 0.0f;
-    public GameObject MoveTarget;
     protected GameObject Target = null;
     public AnimationClip IdleAnimation;
     public AnimationClip AttackStart;

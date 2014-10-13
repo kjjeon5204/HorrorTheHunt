@@ -10,7 +10,6 @@ enum ZombieState
 }
 public class Zombie : Enemy
 {
-    public GameObject MoveTarget;
     public AnimationClip MoveEnd;
     public AnimationClip MoveLoop;
     public AnimationClip AttackBegin;
