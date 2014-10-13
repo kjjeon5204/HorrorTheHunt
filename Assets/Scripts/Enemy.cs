@@ -11,6 +11,8 @@ public class Enemy : MonoBehaviour
     public int value = 100;
     protected bool dead = false;
     public GameObject MoveTarget;
+    
+    
     public void ApplyDamage(int amount)
     {
         health -= amount;
@@ -36,7 +38,7 @@ public class Enemy : MonoBehaviour
         if (bullet)
         {
             ApplyDamage(bullet.Damage);
-            Destroy(bullet);
+            Destroy(other.gameObject);
         }
     }
 	// Update is called once per frame
