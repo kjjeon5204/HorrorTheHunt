@@ -2,6 +2,9 @@
 using System.Collections;
 
 public class CharController : MonoBehaviour {
+	public float playerHP;
+	protected bool dead = false;
+
 	public GameObject player;
 	public GameObject mainCamera;
 	public float cameraX;
@@ -25,6 +28,18 @@ public class CharController : MonoBehaviour {
 	public GameObject barrel;
 	public GameObject muzzleFlash;
 			
+			
+			
+	public virtual void OnTriggerEnter(Collider other)
+	{
+		var bullet = other.gameObject.GetComponent<Bullet>();
+		if (bullet)
+		{
+			ApplyDamage(bullet.Damage);
+			Destroy(bullet);
+		}
+	}
+	
 	// Use this for initialization
 	void Start () {
 		player = (GameObject) GameObject.FindWithTag ("Player");
@@ -37,6 +52,7 @@ public class CharController : MonoBehaviour {
 		ProcessMovement();
 		HandleCamera();
 		FireCheck();
+		Debug.Log(inputMovement);
 		Animate();
 	}
 
@@ -92,18 +108,20 @@ public class CharController : MonoBehaviour {
 			barrel.transform.Rotate(0, 0, 720f * Time.deltaTime);
 			if (Time.time >= shootTime)
 			{ 
-				//muzzleFlash.SetActive (true);
+				Object spotlight = Instantiate (muzzleFlash, bulletSpawn.position, bulletSpawn.rotation);
 				Rigidbody bullet = (Rigidbody) Instantiate(bulletPrefab, bulletSpawn.position, bulletSpawn.rotation);
 				bullet.rigidbody.AddForce(transform.forward * bulletSpeed);
 				Physics.IgnoreCollision(bullet.collider, transform.root.collider);    //ignore hero collision
 				shootTime = Time.time + shootInterval;
 			}
-			//muzzleFlash.SetActive (false);
+		}
+		if (Input.GetButton ("Fire2")) {
+			animation.Play ("slashstart");
 		}
 	}
 	
 	void Animate() {
-
+		Lean ();
 		if (localTransform.z > 0) {
 			animation.CrossFade("moveloop");
 		}
@@ -117,11 +135,31 @@ public class CharController : MonoBehaviour {
 	
 
 	void Lean() {
-		if (inputMovement.x > 0) {
-			transform.Rotate(0, 0, 10f * Time.deltaTime);
+		if (inputMovement.x > 0 && transform.rotation.z < 50) {
+			if (inputMovement.z < 0) {
+				transform.Rotate (0, 0, 720f * Time.deltaTime);
+			}
+			else {
+				transform.Rotate(0, 0, -720f * Time.deltaTime);
+			}
 		}
-		else if (inputMovement.x < 0) {
-			transform.Rotate(0, 0, -10f * Time.deltaTime);
+		else if (inputMovement.x < 0 && transform.rotation.z > -50) {
+			if (inputMovement.z > 0) {
+				transform.Rotate (0, 0, 720f * Time.deltaTime);
+			}
+			else {
+				transform.Rotate(0, 0, -720f * Time.deltaTime);
+			}
+		}
+	}
+	
+	public void ApplyDamage(int amount)
+	{
+		playerHP -= amount;
+		if (playerHP <= 0)
+		{
+			animation.Play("death");
+			dead = true;
 		}
 	}
 }

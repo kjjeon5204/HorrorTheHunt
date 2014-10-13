@@ -43,6 +43,8 @@ public class BuildLogic : MonoBehaviour {
 	public float tileLength;
 	public int tileCount;
 	float timer = 120.0f;
+
+    public GameObject[] roadColliders;
     
 
     bool runFirst = true;
@@ -101,6 +103,14 @@ public class BuildLogic : MonoBehaviour {
         }
     }
 
+    public void road_collider_switch(bool roadSwitch)
+    {
+        for (int ctr = 0; ctr < roadColliders.Length; ctr++)
+        {
+            roadColliders[ctr].SetActive(roadSwitch);
+        }
+    }
+
 	public bool run_build_phase() {
 		if (timer < 0.0f) {
             if (endBuildPhasePlayed == false) {
@@ -118,6 +128,7 @@ public class BuildLogic : MonoBehaviour {
             initialize_tiles_first();
             runFirst = false;
         }
+        road_collider_switch(true);
         uiCam.gameObject.SetActive(true);
         tile_switch(true);
         reset_tiles();
@@ -138,6 +149,7 @@ public class BuildLogic : MonoBehaviour {
 	}
 
 	public void end_build_phase() {
+        road_collider_switch (false);
         uiCam.gameObject.SetActive(false);
         tile_switch(false);
         buildCam.transform.position = initalCamPos;
@@ -465,6 +477,14 @@ public class BuildLogic : MonoBehaviour {
                 input_ui_handler(Input.mousePosition, MouseState.HOVER);
             }
             previousMousePos = Input.mousePosition;
+        }
+        if (buildingBlock != null)
+        {
+            tile_switch(true);
+        }
+        else
+        {
+            tile_switch(false);
         }
 	}
 }

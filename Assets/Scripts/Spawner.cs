@@ -17,6 +17,7 @@ public class WaveSettings
 [System.Serializable]
 public class Spawner : MonoBehaviour
 {
+    public GameObject Player;
     public int CurrentWave = 1;
     public List<WaveSettings> SpawnObjects;
     public List<GameObject> SpawnPoints; 
@@ -58,7 +59,8 @@ public class Spawner : MonoBehaviour
             {
                 var spawnIndex = Random.Range(0, SpawnPoints.Count - 1);
                 var spawnLocation = SpawnPoints[spawnIndex];
-                Instantiate(elm.ObjectToSpawn, spawnLocation.transform.position, Quaternion.identity);
+                var newBaddie = (GameObject)Instantiate(elm.ObjectToSpawn, spawnLocation.transform.position, Quaternion.identity);
+                newBaddie.GetComponent<Enemy>().MoveTarget = Player;
                 elm.TimeSinceSpawn = 0;
             }
         }
