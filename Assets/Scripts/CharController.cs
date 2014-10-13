@@ -3,6 +3,7 @@ using System.Collections;
 
 public class CharController : MonoBehaviour {
 	public float playerHP;
+	protected bool dead = false;
 
 	public GameObject player;
 	public GameObject mainCamera;
@@ -27,6 +28,18 @@ public class CharController : MonoBehaviour {
 	public GameObject barrel;
 	public GameObject muzzleFlash;
 			
+			
+			
+	public virtual void OnTriggerEnter(Collider other)
+	{
+		var bullet = other.gameObject.GetComponent<Bullet>();
+		if (bullet)
+		{
+			ApplyDamage(bullet.Damage);
+			Destroy(bullet);
+		}
+	}
+	
 	// Use this for initialization
 	void Start () {
 		player = (GameObject) GameObject.FindWithTag ("Player");
@@ -132,11 +145,21 @@ public class CharController : MonoBehaviour {
 		}
 		else if (inputMovement.x < 0 && transform.rotation.z > -50) {
 			if (inputMovement.z > 0) {
-				transform.Rotate (0, 0, -720f * Time.deltaTime);
+				transform.Rotate (0, 0, 720f * Time.deltaTime);
 			}
 			else {
-				transform.Rotate(0, 0, 720f * Time.deltaTime);
+				transform.Rotate(0, 0, -720f * Time.deltaTime);
 			}
+		}
+	}
+	
+	public void ApplyDamage(int amount)
+	{
+		playerHP -= amount;
+		if (playerHP <= 0)
+		{
+			animation.Play("death");
+			dead = true;
 		}
 	}
 }
