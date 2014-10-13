@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Controller : MonoBehaviour {
+public class CharController : MonoBehaviour {
 	public GameObject player;
 	public GameObject mainCamera;
 
@@ -32,6 +32,7 @@ public class Controller : MonoBehaviour {
 		FireCheck();
 	}
 
+//----------------------------------------Functions---------------------------------------------
 
 	//Sets up the mouse position on screen and rotates body accordingly
 	void GetInput() {
@@ -75,14 +76,15 @@ public class Controller : MonoBehaviour {
 		mainCamera.transform.eulerAngles = new Vector3 (90, 0, 0);
 	}
 
-	
+	//Checks to see if left mouse is pressed down. Will fire 1 bullet every shoot interval
 	void FireCheck() {
 		if (Input.GetButton ("Fire1"))
 		{
 			if (Time.time >= shootTime)
 			{ 
-				Rigidbody bullet = Instantiate(bulletPrefab, bulletSpawn.position, bulletSpawn.rotation) as Rigidbody;
+				Rigidbody bullet = (Rigidbody) Instantiate(bulletPrefab, bulletSpawn.position, bulletSpawn.rotation);
 				bullet.rigidbody.AddForce(transform.forward * bulletSpeed);
+				Physics.IgnoreCollision(bullet.collider, transform.root.collider);    //ignore hero collision
 				shootTime = Time.time + shootInterval;
 			}
 		}
