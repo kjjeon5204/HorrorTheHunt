@@ -28,15 +28,13 @@ public class CharController : MonoBehaviour {
 	public GameObject barrel;
 	public GameObject muzzleFlash;
 			
-			
-			
-	public virtual void OnTriggerEnter(Collider other)
-	{
-		var bullet = other.gameObject.GetComponent<Bullet>();
-		if (bullet)
+	
+	public virtual void OnTriggerEnter(Collider collider) {
+		var hit = collider.gameObject.GetComponent<Bullet>();
+		if (hit)
 		{
-			ApplyDamage(bullet.Damage);
-			Destroy(bullet);
+			ApplyDamage(hit.Damage);
+			Destroy(hit);
 		}
 	}
 	
@@ -52,7 +50,6 @@ public class CharController : MonoBehaviour {
 		ProcessMovement();
 		HandleCamera();
 		FireCheck();
-		Debug.Log(inputMovement);
 		Animate();
 	}
 
@@ -97,7 +94,7 @@ public class CharController : MonoBehaviour {
 
 	//Moves camera to follow character
 	void HandleCamera() {
-		mainCamera.transform.position = new Vector3 (transform.position.x, cameraDistance, transform.position.z);
+		mainCamera.transform.position = new Vector3 (transform.position.x, cameraDistance, transform.position.z - 60);
 		mainCamera.transform.eulerAngles = new Vector3 (cameraX, cameraY, cameraZ);
 	}
 
