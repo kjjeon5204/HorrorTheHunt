@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Diagnostics.Eventing.Reader;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 [System.Serializable]
@@ -39,6 +40,17 @@ public class Spawner : MonoBehaviour
     public void ResetWaves()
     {
         CurrentWave = 1;
+    }
+
+    public void DestoryMobs()
+    {
+        var objects = GameObject.FindGameObjectsWithTag("Enemy");
+        foreach (var elm in objects)
+        {
+            Destroy(elm);
+        }
+
+
     }
 	// Use this for initialization
 	void Start () {
