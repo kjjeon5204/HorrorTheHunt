@@ -98,5 +98,10 @@ public class Zombie : Enemy
         {
             nonMoving.apply_damage(damage);
         }
+        var charCont = target.GetComponent<CharController>();
+        if (charCont)
+        {
+            charCont.ApplyDamage(damage);
+        }
     }
 }
