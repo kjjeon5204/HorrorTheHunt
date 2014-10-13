@@ -16,6 +16,12 @@ public class Tiles : MonoBehaviour {
         return myData.currentTileStatus;
     }
 
+    public void build_on_tile(GameObject inputObject)
+    {
+        inputObject.transform.position = transform.position;
+        initialized2 = false;
+    }
+
     public void reset_tile()
     {
         initialized = true;

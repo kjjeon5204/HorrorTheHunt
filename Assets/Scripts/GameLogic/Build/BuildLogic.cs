@@ -133,7 +133,8 @@ public class BuildLogic : MonoBehaviour {
         }
         else
         {
-            //currentTouchingTile = null;
+            currentTouchingTile.GetComponent<Tiles>().reset_tile();
+            currentTouchingTile = null;
         }
     }
 
@@ -230,6 +231,7 @@ public class BuildLogic : MonoBehaviour {
         }
         if (Input.GetKeyUp(KeyCode.Mouse0))
         {
+            //UI Handles
             if (curClickData.selectedUIObject != null)
             {
                 //play key effect
@@ -237,6 +239,17 @@ public class BuildLogic : MonoBehaviour {
                     .curKeyType == BaseButton.KeyType.SKIP)
                 {
                     timer = 0;
+                }
+            }
+
+            //Build Handles
+            if (buildingBlock != null && currentTouchingTile != null)
+            {
+                Tiles tempTileHolder = currentTouchingTile.GetComponent<Tiles>();
+                if (tempTileHolder.get_tile_status() == TileStatus.OPEN)
+                {
+                    tempTileHolder.build_on_tile((GameObject)Instantiate(
+                        buildingBlock, Vector3.zero, Quaternion.identity));
                 }
             }
         }
