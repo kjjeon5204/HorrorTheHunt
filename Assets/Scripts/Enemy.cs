@@ -11,6 +11,7 @@ public class Enemy : MonoBehaviour
     public int value = 100;
     protected bool dead = false;
     public GameObject MoveTarget;
+    public GameObject DeathEffect;
     
     
     public void ApplyDamage(int amount)
@@ -24,6 +25,7 @@ public class Enemy : MonoBehaviour
                 currencyGameObj.add_currency(value);
             }
             animation.Play("death");
+            DeathEffect.SetActive(true);
             dead = true;
         }
     }

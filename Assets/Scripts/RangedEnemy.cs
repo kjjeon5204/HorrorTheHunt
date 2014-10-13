@@ -14,6 +14,8 @@ public class RangedEnemy : Enemy
     public AnimationClip MoveLoop;
     public AnimationClip MoveEnd;
     public AnimationClip MoveBegin;
+
+    private bool attacking = false;
     protected enum RangedState
     {
         Idle,
@@ -77,12 +79,19 @@ public class RangedEnemy : Enemy
 
     private void HandleAttackTimer()
     {
-        timeSinceAttack += Time.deltaTime;
-        if (timeSinceAttack >= AttackRate)
+
+        if (!attacking)
         {
-            timeSinceAttack = 0.0f;
-            HandleAttack();
+            animation.PlayQueued(AttackStart.name);
         }
+        attacking = true;
+        if (attacking && !animation.isPlaying)
+        {
+            animation.PlayQueued(AttackEnd.name);
+            HandleAttack();
+            attacking = false;
+        }
+        
     }
 	// Update is called once per frame
 	public override void Update () 
