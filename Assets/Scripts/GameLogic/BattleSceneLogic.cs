@@ -16,6 +16,10 @@ public class BattleSceneLogic : MonoBehaviour {
         timer = 180.0f;
     }
 
+    public void end_combat()
+    {
+    }
+
 	// Use this for initialization
 	void Start () {
 	
