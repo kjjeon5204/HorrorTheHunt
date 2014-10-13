@@ -2,11 +2,18 @@
 using System.Collections;
 
 public class CharController : MonoBehaviour {
+	public float playerHP;
+
 	public GameObject player;
 	public GameObject mainCamera;
+	public float cameraX;
+	public float cameraY;
+	public float cameraZ;
+	public float cameraDistance;
 
-	private Vector3 inputRotation;
-	private Vector3 inputMovement;
+	protected Vector3 localTransform;
+	protected Vector3 inputRotation;
+	protected Vector3 inputMovement;
 	private Vector3 tempvector1;
 	private Vector3 tempvector2;
 
@@ -17,6 +24,8 @@ public class CharController : MonoBehaviour {
 	private float shootTime;
 	public float shootInterval = .5f;
 	public Transform bulletSpawn;
+	public GameObject barrel;
+	public GameObject muzzleFlash;
 			
 	// Use this for initialization
 	void Start () {
@@ -30,6 +39,8 @@ public class CharController : MonoBehaviour {
 		ProcessMovement();
 		HandleCamera();
 		FireCheck();
+		Debug.Log(inputMovement);
+		Animate();
 	}
 
 //----------------------------------------Functions---------------------------------------------
@@ -38,6 +49,7 @@ public class CharController : MonoBehaviour {
 	void GetInput() {
 		//Find keyboard movement vector
 		inputMovement = new Vector3 (Input.GetAxis("Horizontal"), 0 , Input.GetAxis("Vertical"));
+		localTransform = transform.InverseTransformDirection(inputMovement);
 	}
 	
 	void LookAtMouse() {
@@ -72,20 +84,58 @@ public class CharController : MonoBehaviour {
 
 	//Moves camera to follow character
 	void HandleCamera() {
-		mainCamera.transform.position = new Vector3 (transform.position.x, 20, transform.position.z);
-		mainCamera.transform.eulerAngles = new Vector3 (90, 0, 0);
+		mainCamera.transform.position = new Vector3 (transform.position.x, cameraDistance, transform.position.z);
+		mainCamera.transform.eulerAngles = new Vector3 (cameraX, cameraY, cameraZ);
 	}
 
 	//Checks to see if left mouse is pressed down. Will fire 1 bullet every shoot interval
 	void FireCheck() {
-		if (Input.GetButton ("Fire1"))
-		{
+		if (Input.GetButton ("Fire1")) {
+		
+			barrel.transform.Rotate(0, 0, 720f * Time.deltaTime);
 			if (Time.time >= shootTime)
 			{ 
+				Object spotlight = Instantiate (muzzleFlash, bulletSpawn.position, bulletSpawn.rotation);
 				Rigidbody bullet = (Rigidbody) Instantiate(bulletPrefab, bulletSpawn.position, bulletSpawn.rotation);
 				bullet.rigidbody.AddForce(transform.forward * bulletSpeed);
 				Physics.IgnoreCollision(bullet.collider, transform.root.collider);    //ignore hero collision
 				shootTime = Time.time + shootInterval;
+			}
+		}
+		if (Input.GetButton ("Fire2")) {
+			animation.Play ("slashstart");
+		}
+	}
+	
+	void Animate() {
+		Lean ();
+		if (localTransform.z > 0) {
+			animation.CrossFade("moveloop");
+		}
+		else if (localTransform.z < 0) {
+			animation.CrossFade ("movebackloop");
+		}
+		else {
+			animation.CrossFade ("idle");
+		}  
+	}
+	
+
+	void Lean() {
+		if (inputMovement.x > 0 && transform.rotation.z < 50) {
+			if (inputMovement.z < 0) {
+				transform.Rotate (0, 0, 720f * Time.deltaTime);
+			}
+			else {
+				transform.Rotate(0, 0, -720f * Time.deltaTime);
+			}
+		}
+		else if (inputMovement.x < 0 && transform.rotation.z > -50) {
+			if (inputMovement.z > 0) {
+				transform.Rotate (0, 0, -720f * Time.deltaTime);
+			}
+			else {
+				transform.Rotate(0, 0, 720f * Time.deltaTime);
 			}
 		}
 	}
