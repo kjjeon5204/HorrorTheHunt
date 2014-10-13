@@ -21,8 +21,9 @@ public class Zombie : Enemy
     private GameObject Target = null;
     private bool hasAppliedDamage = false;
 	// Use this for initialization
-	void Start () {
-
+	void Start ()
+	{
+	
 	}
 	
 	// Update is called once per frame
