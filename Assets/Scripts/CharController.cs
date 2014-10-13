@@ -2,6 +2,8 @@
 using System.Collections;
 
 public class CharController : MonoBehaviour {
+	public float playerHP;
+
 	public GameObject player;
 	public GameObject mainCamera;
 	public float cameraX;
@@ -37,6 +39,7 @@ public class CharController : MonoBehaviour {
 		ProcessMovement();
 		HandleCamera();
 		FireCheck();
+		Debug.Log(inputMovement);
 		Animate();
 	}
 
@@ -92,18 +95,20 @@ public class CharController : MonoBehaviour {
 			barrel.transform.Rotate(0, 0, 720f * Time.deltaTime);
 			if (Time.time >= shootTime)
 			{ 
-				//muzzleFlash.SetActive (true);
+				Object spotlight = Instantiate (muzzleFlash, bulletSpawn.position, bulletSpawn.rotation);
 				Rigidbody bullet = (Rigidbody) Instantiate(bulletPrefab, bulletSpawn.position, bulletSpawn.rotation);
 				bullet.rigidbody.AddForce(transform.forward * bulletSpeed);
 				Physics.IgnoreCollision(bullet.collider, transform.root.collider);    //ignore hero collision
 				shootTime = Time.time + shootInterval;
 			}
-			//muzzleFlash.SetActive (false);
+		}
+		if (Input.GetButton ("Fire2")) {
+			animation.Play ("slashstart");
 		}
 	}
 	
 	void Animate() {
-
+		Lean ();
 		if (localTransform.z > 0) {
 			animation.CrossFade("moveloop");
 		}
@@ -117,11 +122,21 @@ public class CharController : MonoBehaviour {
 	
 
 	void Lean() {
-		if (inputMovement.x > 0) {
-			transform.Rotate(0, 0, 10f * Time.deltaTime);
+		if (inputMovement.x > 0 && transform.rotation.z < 50) {
+			if (inputMovement.z < 0) {
+				transform.Rotate (0, 0, 720f * Time.deltaTime);
+			}
+			else {
+				transform.Rotate(0, 0, -720f * Time.deltaTime);
+			}
 		}
-		else if (inputMovement.x < 0) {
-			transform.Rotate(0, 0, -10f * Time.deltaTime);
+		else if (inputMovement.x < 0 && transform.rotation.z > -50) {
+			if (inputMovement.z > 0) {
+				transform.Rotate (0, 0, -720f * Time.deltaTime);
+			}
+			else {
+				transform.Rotate(0, 0, 720f * Time.deltaTime);
+			}
 		}
 	}
 }
