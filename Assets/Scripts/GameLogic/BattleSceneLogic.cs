@@ -45,6 +45,7 @@ public class BattleSceneLogic : MonoBehaviour {
         mainCharacter.SetActive(false);
         combatUI.gameObject.SetActive(false);
         spawner.NextWave();
+        spawner.DestoryMobs();
         spawner.gameObject.SetActive(false);
     }
 
