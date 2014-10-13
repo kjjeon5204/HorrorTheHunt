@@ -2,13 +2,16 @@
 using System.Collections;
 
 public class BattleSceneLogic : MonoBehaviour {
-    public GameObject combatUI;
+    public Camera combatUI;
+    public Camera gameOverUI;
     public Spawner spawner;
     public TextMesh currencyDisplay;
+    public GameObject backToMenuButton;
 
     float timer;
     public TextMesh timerDisplay;
     int currency;
+    bool playerDied = false;
 
     public int get_remaining_currency()
     {
@@ -29,7 +32,7 @@ public class BattleSceneLogic : MonoBehaviour {
 
     public void initialize_combat(int inCurrency)
     {
-        combatUI.SetActive(true);
+        combatUI.gameObject.SetActive(true);
         timer = 5.0f;
         currency = inCurrency;
         spawner.gameObject.SetActive(true);
@@ -37,9 +40,30 @@ public class BattleSceneLogic : MonoBehaviour {
 
     public void end_combat()
     {
-        combatUI.SetActive(false);
+        combatUI.gameObject.SetActive(false);
         spawner.NextWave();
         spawner.gameObject.SetActive(false);
+    }
+
+    public void player_died()
+    {
+        spawner.gameObject.SetActive(false);
+        combatUI.gameObject.SetActive(false);
+        gameOverUI.gameObject.SetActive(true);
+    }
+
+    void input_handler_end(Vector3 mousePos)
+    {
+        Vector2 mouseWorldPos = gameOverUI.ScreenToWorldPoint(mousePos);
+        RaycastHit2D hitDetector = Physics2D.Raycast(mouseWorldPos, Vector2.zero);
+        if (hitDetector.collider != null)
+        {
+            BaseButton buttonPressed = hitDetector.collider.GetComponent<BaseButton>();
+            if (buttonPressed.curKeyType == BaseButton.KeyType.BACKTOMENU)
+            {
+
+            }
+        }
     }
 
 	// Use this for initialization
@@ -49,17 +73,20 @@ public class BattleSceneLogic : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        timer -= Time.deltaTime;
-        timerDisplay.text = ((int)(timer / 60)).ToString() +
-            ":";
-        if ((int)(timer % 60) < 10)
+        if (playerDied == true)
         {
-            timerDisplay.text += ("0" + ((int)(timer % 60)).ToString());
+            timer -= Time.deltaTime;
+            timerDisplay.text = ((int)(timer / 60)).ToString() +
+                ":";
+            if ((int)(timer % 60) < 10)
+            {
+                timerDisplay.text += ("0" + ((int)(timer % 60)).ToString());
+            }
+            else
+            {
+                timerDisplay.text += ((int)(timer % 60)).ToString();
+            }
+            currencyDisplay.text = currency.ToString();
         }
-        else
-        {
-            timerDisplay.text += ((int)(timer % 60)).ToString();
-        }
-        currencyDisplay.text = currency.ToString();
     }
 }

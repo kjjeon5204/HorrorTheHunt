@@ -26,10 +26,16 @@ public class BuildLogic : MonoBehaviour {
     //***********Building Handler!**************
     //******************************************
     public Camera buildCam;
+    public GameObject myWitch;
+    public GameObject witchTeleportEffect;
+    public GameObject witchBuildEffect;
 	public GameObject[] stuctureList;
 	IDictionary<string, GameObject> structureLibrary = new Dictionary<string, GameObject>();
     public TextMesh timerDisplay;
     public TextMesh currencyDisplay;
+
+    Vector3 initalCamPos;
+    Quaternion initialCamRot;
 
 	//Tile structure
     public GameObject tilePrefab;
@@ -40,6 +46,8 @@ public class BuildLogic : MonoBehaviour {
     
 
     bool runFirst = true;
+    bool endBuildPhasePlayed = false;
+    
 
     GameObject buildingBlock;
     Vector3 mouseDeltaPos;
@@ -95,6 +103,10 @@ public class BuildLogic : MonoBehaviour {
 
 	public bool run_build_phase() {
 		if (timer < 0.0f) {
+            if (endBuildPhasePlayed == false) {
+                end_build_phase();
+                endBuildPhasePlayed = true;
+            }
 			return true;
 		}
 		return false;
@@ -121,12 +133,33 @@ public class BuildLogic : MonoBehaviour {
             curClickData.selectedUIObject.GetComponent<BaseButton>().no_effect();
             curClickData.selectedUIObject = null;
         }
+        myWitch.SetActive(true);
+        endBuildPhasePlayed = false;
 	}
 
 	public void end_build_phase() {
         uiCam.gameObject.SetActive(false);
         tile_switch(false);
+        buildCam.transform.position = initalCamPos;
+        buildCam.transform.rotation = initialCamRot;
+        myWitch.animation.Play("teleportcast");
+        witchTeleportEffect.SetActive(true);
+        endPhase = true;
 	}
+
+    public bool run_end_phase()
+    {
+        if (myWitch.animation.IsPlaying("teleportcast"))
+        {
+            return false;
+        }
+        else
+        {
+            //witchTeleportEffect.SetActive(false);
+            myWitch.SetActive(false);
+            return true;
+        }
+    }
 
     public GameObject currentTouchingTile;
 
@@ -181,7 +214,7 @@ public class BuildLogic : MonoBehaviour {
     //*****************************************
     public Camera uiCam;
     public GameObject skipButton;
-    public bool endPhase;
+    public bool endPhase = false;
 
     public enum MouseState
     {
@@ -303,128 +336,135 @@ public class BuildLogic : MonoBehaviour {
 	// Use this for initialization                                                                                                                                                                                ;
 	void Start () {
         previousMousePos = Input.mousePosition;
+        initialCamRot = buildCam.transform.rotation;
+        initalCamPos = buildCam.transform.position;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        mouseDeltaPos = Input.mousePosition - previousMousePos;
-        timer -= Time.deltaTime;
-        //Update Displays
-        timerDisplay.text = ((int)(timer / 60)).ToString() +
-            ":";
-        if ((int)(timer % 60) < 10)
+        if (!endPhase)
         {
-            timerDisplay.text += ("0" + ((int)(timer % 60)).ToString());
-        }
-        else
-        {
-            timerDisplay.text += ((int)(timer % 60)).ToString();
-        }
-        currencyDisplay.text = currency.ToString();
-
-        if (curClickData.hoveredUIObject == null)
-        {
-            drag_camera_mouse();
-        }
-        else
-        {
-            Debug.Log("You are hovering oversomething!");
-        }
-
-        if (Input.GetKeyUp(KeyCode.Mouse0))
-        {
-            //UI Handles
-            if (curClickData.selectedUIObject != null)
+            mouseDeltaPos = Input.mousePosition - previousMousePos;
+            timer -= Time.deltaTime;
+            //Update Displays
+            timerDisplay.text = ((int)(timer / 60)).ToString() +
+                ":";
+            if ((int)(timer % 60) < 10)
             {
-                BaseButton uiObjectTemp = curClickData.selectedUIObject.GetComponent<BaseButton>();
-                //play key effect
-                if (uiObjectTemp.curKeyType == BaseButton.KeyType.SKIP)
-                {
-                    timer = 0;
-                }
-                else if (uiObjectTemp.curKeyType == BaseButton.KeyType.BUILDOPTION)
-                {
-                    if (buildingBlock != null && buildingBlock.activeInHierarchy == true)
-                        buildingBlock.SetActive(false);
-                    buildingBlock = uiObjectTemp.get_button_object();
-                    buildingBlock.SetActive(true);
-                }
+                timerDisplay.text += ("0" + ((int)(timer % 60)).ToString());
+            }
+            else
+            {
+                timerDisplay.text += ((int)(timer % 60)).ToString();
+            }
+            currencyDisplay.text = currency.ToString();
 
+            if (curClickData.hoveredUIObject == null)
+            {
+                drag_camera_mouse();
+            }
+            else
+            {
+                Debug.Log("You are hovering oversomething!");
             }
 
-            //Build Handles
-            if (buildingBlock != null && currentTouchingTile != null)
+            if (Input.GetKeyUp(KeyCode.Mouse0))
             {
-                Tiles tempTileHolder = currentTouchingTile.GetComponent<Tiles>();
-                if (tempTileHolder.get_tile_status() == TileStatus.OPEN)
+                //UI Handles
+                if (curClickData.selectedUIObject != null)
                 {
-                    tempTileHolder.build_on_tile((GameObject)Instantiate(
-                        buildingBlock, Vector3.zero, Quaternion.identity));
-
-                    //disable all buttons after built
-                    if (curClickData.selectedUIObject != null)
+                    BaseButton uiObjectTemp = curClickData.selectedUIObject.GetComponent<BaseButton>();
+                    //play key effect
+                    if (uiObjectTemp.curKeyType == BaseButton.KeyType.SKIP)
                     {
-                        curClickData.selectedUIObject.GetComponent<BaseButton>().
-                           no_effect();
-                        curClickData.selectedUIObject = null;
+                        timer = 0;
                     }
-                    if (buildingBlock != null)
+                    else if (uiObjectTemp.curKeyType == BaseButton.KeyType.BUILDOPTION)
                     {
-                        buildingBlock.SetActive(false);
-                        buildingBlock = null;
+                        if (buildingBlock != null && buildingBlock.activeInHierarchy == true)
+                            buildingBlock.SetActive(false);
+                        buildingBlock = uiObjectTemp.get_button_object();
+                        buildingBlock.SetActive(true);
                     }
 
                 }
+
+                //Build Handles
+                if (buildingBlock != null && currentTouchingTile != null)
+                {
+                    Tiles tempTileHolder = currentTouchingTile.GetComponent<Tiles>();
+                    if (tempTileHolder.get_tile_status() == TileStatus.OPEN)
+                    {
+                        witchBuildEffect.SetActive(true);
+                        myWitch.animation.Play("constructioncast");
+                        tempTileHolder.build_on_tile((GameObject)Instantiate(
+                            buildingBlock, Vector3.zero, Quaternion.identity));
+
+                        //disable all buttons after built
+                        if (curClickData.selectedUIObject != null)
+                        {
+                            curClickData.selectedUIObject.GetComponent<BaseButton>().
+                               no_effect();
+                            curClickData.selectedUIObject = null;
+                        }
+                        if (buildingBlock != null)
+                        {
+                            buildingBlock.SetActive(false);
+                            buildingBlock = null;
+                        }
+
+                    }
+                }
             }
-        }
-        else if (Input.GetKey(KeyCode.Mouse0))
-        {
-            input_ui_handler(Input.mousePosition, MouseState.LEFTCLICKED);
+            else if (Input.GetKey(KeyCode.Mouse0))
+            {
+                input_ui_handler(Input.mousePosition, MouseState.LEFTCLICKED);
                 //drag around scene cam
-            /*
-            if (curClickData.selectedUIObject == null && buildingBlock == null) {
-                Vector3 localMovement = Vector3.zero;
-                float sensitivity = 80.0f;
-                if (mouseDeltaPos.x > 0.0f)
-                {
-                    localMovement += buildCam.transform.InverseTransformDirection(Vector3.left);
+                /*
+                if (curClickData.selectedUIObject == null && buildingBlock == null) {
+                    Vector3 localMovement = Vector3.zero;
+                    float sensitivity = 80.0f;
+                    if (mouseDeltaPos.x > 0.0f)
+                    {
+                        localMovement += buildCam.transform.InverseTransformDirection(Vector3.left);
+                    }
+                    if (mouseDeltaPos.x < 0.0f)
+                    {
+                        localMovement += buildCam.transform.InverseTransformDirection(Vector3.right);
+                    }
+                    if (mouseDeltaPos.y > 0.0f)
+                    {
+                        localMovement += buildCam.transform.InverseTransformDirection(Vector3.back);
+                    }
+                    if (mouseDeltaPos.y < 0.0f)
+                    {
+                        localMovement += buildCam.transform.InverseTransformDirection(Vector3.forward);
+                    }
+                    buildCam.transform.Translate(localMovement.normalized * Time.deltaTime * sensitivity);
                 }
-                if (mouseDeltaPos.x < 0.0f)
-                {
-                    localMovement += buildCam.transform.InverseTransformDirection(Vector3.right);
-                }
-                if (mouseDeltaPos.y > 0.0f)
-                {
-                    localMovement += buildCam.transform.InverseTransformDirection(Vector3.back);
-                }
-                if (mouseDeltaPos.y < 0.0f)
-                {
-                    localMovement += buildCam.transform.InverseTransformDirection(Vector3.forward);
-                }
-                buildCam.transform.Translate(localMovement.normalized * Time.deltaTime * sensitivity);
+                 */
             }
-             */ 
-        }
-        
-        else if (Input.GetKey(KeyCode.Mouse1))
-        {
-            if (curClickData.selectedUIObject != null)
+
+            else if (Input.GetKey(KeyCode.Mouse1))
             {
-                curClickData.selectedUIObject.GetComponent<BaseButton>().
-                   no_effect();
-                curClickData.selectedUIObject = null;
+                if (curClickData.selectedUIObject != null)
+                {
+                    curClickData.selectedUIObject.GetComponent<BaseButton>().
+                       no_effect();
+                    curClickData.selectedUIObject = null;
+                }
+                if (buildingBlock != null)
+                {
+                    buildingBlock.SetActive(false);
+                    buildingBlock = null;
+                }
             }
-            if (buildingBlock != null)
+            else
             {
-                buildingBlock.SetActive(false);
-                buildingBlock = null;
+                input_handler(Input.mousePosition);
+                input_ui_handler(Input.mousePosition, MouseState.HOVER);
             }
+            previousMousePos = Input.mousePosition;
         }
-        else
-        {
-            input_handler(Input.mousePosition);
-            input_ui_handler(Input.mousePosition, MouseState.HOVER);
-        }
-        previousMousePos = Input.mousePosition;
 	}
 }

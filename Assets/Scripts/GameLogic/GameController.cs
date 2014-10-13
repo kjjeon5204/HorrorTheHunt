@@ -36,11 +36,13 @@ public class GameController : MonoBehaviour {
             }
 			if (buildLogic.run_build_phase()) {
 				//end condition -> to battle
-                buildLogic.end_build_phase();
-                currency = buildLogic.get_remaining_money();
-                buildLogic.enabled = false;
-				curPhase = GamePhase.BATTLE;
-                phaseInitialized = false;
+                if (buildLogic.run_end_phase())
+                {
+                    currency = buildLogic.get_remaining_money();
+                    buildLogic.enabled = false;
+                    curPhase = GamePhase.BATTLE;
+                    phaseInitialized = false;
+                }
 			}
 		}
         if (curPhase == GamePhase.BATTLE)
