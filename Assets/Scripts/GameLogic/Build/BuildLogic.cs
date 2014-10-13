@@ -128,6 +128,7 @@ public class BuildLogic : MonoBehaviour {
             initialize_tiles_first();
             runFirst = false;
         }
+        endPhase = false;
         road_collider_switch(true);
         uiCam.gameObject.SetActive(true);
         tile_switch(true);
@@ -278,14 +279,24 @@ public class BuildLogic : MonoBehaviour {
                         curClickData.hoveredUIObject = null;
                     }
                     curClickData.hoveredUIObject = hitDetector.collider.gameObject;
-                    if ((curClickData.selectedUIObject == null || 
-                        curClickData.selectedUIObject != hitDetector.collider.gameObject)) 
+                    if (curClickData.selectedUIObject == null || 
+                        curClickData.selectedUIObject != hitDetector.collider.gameObject) 
                     {
                         //create hover effect
-                        curClickData.hoveredUIObject.GetComponent<BaseButton>().hover_effect();
+                        if (curClickData.hoveredUIObject != null) {
+                            BaseButton tempButton = curClickData.hoveredUIObject.GetComponent<BaseButton>();
+                            if (tempButton != null)
+                                tempButton.hover_effect();
+                        }
                     }
                     if (curClickData.hoveredUIObject != null)
-                        curClickData.hoveredUIObject.GetComponent<BaseButton>().activate_hover_overlay();
+                    {
+                        BaseButton tempButton = curClickData.hoveredUIObject.GetComponent<BaseButton>();
+                        if (tempButton != null)
+                        {
+                            tempButton.activate_hover_overlay();
+                        }
+                    }
                 }
             }
             //Disable any build buffer objects
@@ -303,6 +314,7 @@ public class BuildLogic : MonoBehaviour {
             if (curClickData.hoveredUIObject != null && curClickData.hoveredUIObject != curClickData.selectedUIObject)
             {
                 //disable hover
+                Debug.Log("Currently hovered UI Object" + curClickData.hoveredUIObject);
                 curClickData.hoveredUIObject.GetComponent<BaseButton>().no_effect();
                 curClickData.hoveredUIObject = null;
             }
