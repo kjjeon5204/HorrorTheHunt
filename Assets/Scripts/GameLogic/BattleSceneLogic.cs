@@ -7,6 +7,7 @@ public class BattleSceneLogic : MonoBehaviour {
     public Spawner spawner;
     public TextMesh currencyDisplay;
     public GameObject backToMenuButton;
+    public GameObject mainCharacter;
 
     float timer;
     public TextMesh timerDisplay;
@@ -32,14 +33,16 @@ public class BattleSceneLogic : MonoBehaviour {
 
     public void initialize_combat(int inCurrency)
     {
+        mainCharacter.SetActive(true);
         combatUI.gameObject.SetActive(true);
-        timer = 5.0f;
+        timer = 180.0f;
         currency = inCurrency;
         spawner.gameObject.SetActive(true);
     }
 
     public void end_combat()
     {
+        mainCharacter.SetActive(false);
         combatUI.gameObject.SetActive(false);
         spawner.NextWave();
         spawner.gameObject.SetActive(false);
@@ -73,7 +76,7 @@ public class BattleSceneLogic : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (playerDied == true)
+        if (playerDied == false)
         {
             timer -= Time.deltaTime;
             timerDisplay.text = ((int)(timer / 60)).ToString() +
