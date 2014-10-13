@@ -8,7 +8,7 @@ public enum GamePhase {
 }
 
 public class GameController : MonoBehaviour {
-	GamePhase curPhase = GamePhase.BUILD;
+	GamePhase curPhase = GamePhase.BATTLE;
 
 	public BuildLogic buildLogic;
 	public BattleSceneLogic battleLogic;
