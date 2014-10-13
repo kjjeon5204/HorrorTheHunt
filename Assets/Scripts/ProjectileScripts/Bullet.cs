@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Bullet : MonoBehaviour {
-
+public class Bullet : MonoBehaviour
+{
+    public int Damage = 10;
 	// Use this for initialization
 	void Start () {
 	

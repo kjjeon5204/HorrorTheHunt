@@ -18,7 +18,7 @@ public class BasicBarrier : NonMovingObject {
 	
 	// Update is called once per frame
 	void Update () {
-        if (hp < 0)
+        if (hp <= 0)
         {
             collider.enabled = false;
             myState = MyState.DEATH;
