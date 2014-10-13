@@ -6,7 +6,7 @@ public class TransitionLogic : MonoBehaviour {
 		if (/*end condition*/true) {
 			return true;
 		}
-		return false;
+		//return false;
 	}
 
 
