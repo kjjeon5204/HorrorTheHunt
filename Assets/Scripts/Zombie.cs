@@ -44,6 +44,7 @@ public class Zombie : Enemy
                     if (!hasAppliedDamage)
                     {
                         ApplyDamageTo(Target);
+                        hasAppliedDamage = true;
                     }
                 }
 	            break;

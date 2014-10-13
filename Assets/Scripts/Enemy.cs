@@ -17,7 +17,6 @@ public class Enemy : MonoBehaviour
             var animation = GetComponent<Animation>();
             animation.PlayQueued("death");
             dead = true;
-            //TODO: handle death
         }
     }
 	// Use this for initialization
