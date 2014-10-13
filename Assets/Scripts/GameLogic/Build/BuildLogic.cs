@@ -466,5 +466,13 @@ public class BuildLogic : MonoBehaviour {
             }
             previousMousePos = Input.mousePosition;
         }
+        if (buildingBlock != null)
+        {
+            tile_switch(true);
+        }
+        else
+        {
+            tile_switch(false);
+        }
 	}
 }
