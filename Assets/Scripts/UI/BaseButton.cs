@@ -10,6 +10,7 @@ public class BaseButton : MonoBehaviour {
     public KeyType curKeyType;
 
     public Sprite buttonHover;
+    public GameObject buttonHoverOverlay;
     public Sprite buttonClicked;
     public Sprite buttonNoEffect;
 
@@ -26,9 +27,20 @@ public class BaseButton : MonoBehaviour {
         return null;
     }
 
+    public void activate_hover_overlay()
+    {
+        if (buttonHoverOverlay != null && buttonHoverOverlay.activeInHierarchy == false)
+            buttonHoverOverlay.SetActive(true);
+    }
+
+    public void deactivate_hover_overlay()
+    {
+        if (buttonHoverOverlay != null)
+            buttonHoverOverlay.SetActive(false);
+    }
+
     public void hover_effect()
     {
-        Debug.Log("Button hovering!");
         if (buttonHover != null)
             spriteRenderer.sprite = buttonHover;
     }
@@ -44,6 +56,10 @@ public class BaseButton : MonoBehaviour {
         if (buttonNoEffect != null)
         {
             spriteRenderer.sprite = buttonNoEffect;
+        }
+        if (buttonHoverOverlay != null)
+        {
+            buttonHoverOverlay.SetActive(false);
         }
     }
 }
