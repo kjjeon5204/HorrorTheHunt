@@ -9,6 +9,7 @@ public class Enemy : MonoBehaviour
     public int speed = 10;
     public int damage = 100;
     private bool dead = false;
+
     public void ApplyDamage(int amount)
     {
         health -= amount;
