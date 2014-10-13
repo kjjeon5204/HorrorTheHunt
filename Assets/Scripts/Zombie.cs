@@ -27,8 +27,12 @@ public class Zombie : Enemy
 	}
 	
 	// Update is called once per frame
-	void Update () {
-	    base.Update();
+	public override void Update () {
+        base.Update();
+	    if (dead)
+	    {
+	        return;
+	    }
 	    var anim = GetComponent<Animation>();
 	    switch (state)
 	    {
@@ -36,7 +40,11 @@ public class Zombie : Enemy
 	            anim.Play(Idle.name);
 	            break;
 	        case ZombieState.Attacking:
-	            if (!anim.isPlaying)
+	            if (Target == null)
+	            {
+	                state = ZombieState.Moving;
+	            }
+	            else if (!anim.isPlaying)
 	            {
 	                hasAppliedDamage = false;
 	                anim.PlayQueued(AttackBegin.name);
@@ -60,14 +68,15 @@ public class Zombie : Enemy
 	        default:
 	            throw new ArgumentOutOfRangeException();
 	    }
+        
 
 	}
 
-    void OnTriggerEnter(Collider other)
+    public override void OnTriggerEnter(Collider other)
     {
+        base.OnTriggerEnter(other);
         if (other.gameObject.CompareTag("Wall") || other.gameObject.CompareTag("Turret"))
         {
-            var anim = GetComponent<Animation>();
             Target = other.gameObject;
             state = ZombieState.Attacking;
 
@@ -78,7 +87,6 @@ public class Zombie : Enemy
     {
         if (other.gameObject == Target)
         {
-            var anim = GetComponent<Animation>();
             state = ZombieState.Moving;
             hasAppliedDamage = false;
             Target = null;
