@@ -4,8 +4,9 @@ using System.Collections;
 public class BattleSceneLogic : MonoBehaviour {
     public GameObject combatUI;
     public Spawner spawner;
+    public TextMesh currencyDisplay;
 
-    public float timer;
+    float timer;
     public TextMesh timerDisplay;
     int currency;
 
@@ -29,7 +30,7 @@ public class BattleSceneLogic : MonoBehaviour {
     public void initialize_combat(int inCurrency)
     {
         combatUI.SetActive(true);
-        timer = 180.0f;
+        timer = 5.0f;
         currency = inCurrency;
         spawner.gameObject.SetActive(true);
     }
@@ -49,7 +50,16 @@ public class BattleSceneLogic : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         timer -= Time.deltaTime;
-        timerDisplay.text = ((int)(timer / 60)).ToString() + 
-            ":" + ((int)(timer % 60)).ToString();
-	}
+        timerDisplay.text = ((int)(timer / 60)).ToString() +
+            ":";
+        if ((int)(timer % 60) < 10)
+        {
+            timerDisplay.text += ("0" + ((int)(timer % 60)).ToString());
+        }
+        else
+        {
+            timerDisplay.text += ((int)(timer % 60)).ToString();
+        }
+        currencyDisplay.text = currency.ToString();
+    }
 }
