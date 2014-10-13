@@ -111,6 +111,9 @@ public class BuildLogic : MonoBehaviour {
     public void input_handler(Vector3 mousePos)
     {
         Ray ray = buildCam.ScreenPointToRay(mousePos);
+        Vector3 temp = ray.origin;
+        temp.z += 4.0f;
+        ray.origin = temp;
         //worldPos = new Vector3(worldPos.x, 20.0f, worldPos.z);
         //Ray ray = new Ray(worldPos, Vector3.down * 30.0f);
         RaycastHit hitDetector;
@@ -195,6 +198,7 @@ public class BuildLogic : MonoBehaviour {
                 }
                 if (myMouseState == MouseState.HOVER)
                 {
+                    Debug.Log("hovering over button!");
                     if (curClickData.hoveredUIObject != null && curClickData.hoveredUIObject != hitDetector.collider.gameObject)
                     {
                         //disable hover
@@ -210,16 +214,23 @@ public class BuildLogic : MonoBehaviour {
                     }
                 }
             }
+            //Disable any build buffer objects
+            if (buildingBlock != null)
+                buildingBlock.SetActive(false);
+            if (currentTouchingTile != null)
+            {
+                currentTouchingTile.GetComponent<Tiles>().reset_tile();
+                currentTouchingTile = null;
+            }
+
         }
         else
         {
-            if (curClickData.hoveredUIObject)
+            if (curClickData.hoveredUIObject != null && curClickData.hoveredUIObject != curClickData.selectedUIObject)
             {
-                if (curClickData.hoveredUIObject)
-                {
-                    //disable hover
-                    curClickData.hoveredUIObject = null;
-                }
+                //disable hover
+                curClickData.hoveredUIObject.GetComponent<BaseButton>().no_effect();
+                curClickData.hoveredUIObject = null;
             }
         }
     }
@@ -234,11 +245,6 @@ public class BuildLogic : MonoBehaviour {
 	void Update () {
         timer -= Time.deltaTime;
         timerDisplay.text = "Display: " + ((int)timer).ToString();
-        input_handler(Input.mousePosition);
-        if (Input.GetKey(KeyCode.Mouse0))
-        {
-            input_ui_handler(Input.mousePosition, MouseState.LEFTCLICKED);
-        }
         if (Input.GetKeyUp(KeyCode.Mouse0))
         {
             //UI Handles
@@ -281,11 +287,16 @@ public class BuildLogic : MonoBehaviour {
                         buildingBlock.SetActive(false);
                         buildingBlock = null;
                     }
-                
+
                 }
             }
         }
-        if (Input.GetKey(KeyCode.Mouse1))
+        else if (Input.GetKey(KeyCode.Mouse0))
+        {
+            input_ui_handler(Input.mousePosition, MouseState.LEFTCLICKED);
+        }
+        
+        else if (Input.GetKey(KeyCode.Mouse1))
         {
             if (curClickData.selectedUIObject != null)
             {
@@ -301,6 +312,7 @@ public class BuildLogic : MonoBehaviour {
         }
         else
         {
+            input_handler(Input.mousePosition);
             input_ui_handler(Input.mousePosition, MouseState.HOVER);
         }
 	}

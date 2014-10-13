@@ -7,27 +7,23 @@ public enum ObjectType
     TURRET
 }
 
-public class Objects : MonoBehaviour {
+public class NonMovingObject : MonoBehaviour {
+    public int hp;
+    public int price;
+
     public ObjectType thisObjectType;
     public AnimationClip spawnAnimation;
     public AnimationClip destructionAnimation;
     private bool phaseInitialized = false;
 
-    protected bool play_spawn_animation()
+    public void apply_damage(int damage)
     {
-        if (phaseInitialized == false)
-        {
-            animation.Play(spawnAnimation.name);
-            phaseInitialized = true;
-        }
-        else
-        {
-            if (animation.IsPlaying(spawnAnimation.name))
-            {
-                return true;
-            }
-        }
-        return false;
+        hp -= damage;
+    }
+
+    public void play_spawn_animation()
+    {
+        animation.Play(spawnAnimation.name);
     }
 
     protected bool play_destroy_animation()

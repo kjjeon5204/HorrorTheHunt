@@ -19,6 +19,18 @@ public class Tiles : MonoBehaviour {
     public void build_on_tile(GameObject inputObject)
     {
         inputObject.transform.position = transform.position;
+        NonMovingObject scriptAcc = inputObject.GetComponent<NonMovingObject>();
+        scriptAcc.enabled = true;
+        scriptAcc.play_spawn_animation();
+        myData.occupyingObject = inputObject;
+        if (inputObject.tag == "Wall")
+        {
+            myData.currentTileStatus = TileStatus.WALL;
+        }
+        else if (inputObject.tag == "Turret")
+        {
+            myData.currentTileStatus = TileStatus.TURRET;
+        }
         initialized2 = false;
     }
 

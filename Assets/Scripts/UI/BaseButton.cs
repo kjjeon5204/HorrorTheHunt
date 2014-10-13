@@ -28,6 +28,7 @@ public class BaseButton : MonoBehaviour {
 
     public void hover_effect()
     {
+        Debug.Log("Button hovering!");
         if (buttonHover != null)
             spriteRenderer.sprite = buttonHover;
     }
