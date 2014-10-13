@@ -50,7 +50,8 @@ public class Tiles : MonoBehaviour {
     }
 
 	void OnTriggerEnter(Collider objectOnTile) {
-        if ((objectOnTile.gameObject.tag == "Turret" || objectOnTile.gameObject.tag == "Wall"))
+        if ((objectOnTile.gameObject.tag == "Turret" || objectOnTile.gameObject.tag == "Wall" ||
+            objectOnTile.gameObject.tag == "UnBuildable"))
         {
             initialized = true;
             myData.occupyingObject = objectOnTile.gameObject;
@@ -62,10 +63,10 @@ public class Tiles : MonoBehaviour {
             {
                 myData.currentTileStatus = TileStatus.WALL;
             }
-            if (objectOnTile.gameObject.tag == "Unbuildable")
+            if (objectOnTile.gameObject.tag == "UnBuildable")
             {
                 myData.currentTileStatus = TileStatus.UNBUILDABLE;
-                myData.occupyingObject.collider.enabled = false;
+                //myData.occupyingObject.collider.enabled = false;
             }
         }
 	}

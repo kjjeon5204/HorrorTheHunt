@@ -4,7 +4,7 @@ using System.Collections;
 public class BaseButton : MonoBehaviour {
     public enum KeyType
     {
-        BUILDING,
+        BUILDOPTION,
         SKIP
     }
     public KeyType curKeyType;
@@ -21,6 +21,10 @@ public class BaseButton : MonoBehaviour {
         spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
 	}
 
+    public virtual GameObject get_button_object()
+    {
+        return null;
+    }
 
     public void hover_effect()
     {

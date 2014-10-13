@@ -124,10 +124,20 @@ public class BuildLogic : MonoBehaviour {
                     currentTouchingTile.GetComponent<Tiles>().reset_tile();
                 }
                 currentTouchingTile = hitDetector.collider.gameObject;
-                currentTouchingTile.GetComponent<Tiles>().set_selected_color();
-                if (buildingBlock != null)
+                Tiles tempTile = currentTouchingTile.GetComponent<Tiles>();
+                if (tempTile.get_tile_status() == TileStatus.OPEN)
                 {
-                    buildingBlock.transform.position = currentTouchingTile.transform.position;
+                    currentTouchingTile.GetComponent<Tiles>().set_selected_color();
+                    if (buildingBlock != null)
+                    {
+                        buildingBlock.SetActive(true);
+                        buildingBlock.transform.position = currentTouchingTile.transform.position;
+                    }
+                }
+                else
+                {
+                    if (buildingBlock != null)
+                        buildingBlock.SetActive(false);
                 }
             }
         }
@@ -234,12 +244,20 @@ public class BuildLogic : MonoBehaviour {
             //UI Handles
             if (curClickData.selectedUIObject != null)
             {
+                BaseButton uiObjectTemp = curClickData.selectedUIObject.GetComponent<BaseButton>();
                 //play key effect
-                if (curClickData.selectedUIObject.GetComponent<BaseButton>()
-                    .curKeyType == BaseButton.KeyType.SKIP)
+                if (uiObjectTemp.curKeyType == BaseButton.KeyType.SKIP)
                 {
                     timer = 0;
                 }
+                else if (uiObjectTemp.curKeyType == BaseButton.KeyType.BUILDOPTION)
+                {
+                    if (buildingBlock != null && buildingBlock.activeInHierarchy == true)
+                        buildingBlock.SetActive(false);
+                    buildingBlock = uiObjectTemp.get_button_object();
+                    buildingBlock.SetActive(true);
+                }
+
             }
 
             //Build Handles
@@ -250,6 +268,20 @@ public class BuildLogic : MonoBehaviour {
                 {
                     tempTileHolder.build_on_tile((GameObject)Instantiate(
                         buildingBlock, Vector3.zero, Quaternion.identity));
+
+                    //disable all buttons after built
+                    if (curClickData.selectedUIObject != null)
+                    {
+                        curClickData.selectedUIObject.GetComponent<BaseButton>().
+                           no_effect();
+                        curClickData.selectedUIObject = null;
+                    }
+                    if (buildingBlock != null)
+                    {
+                        buildingBlock.SetActive(false);
+                        buildingBlock = null;
+                    }
+                
                 }
             }
         }
@@ -260,6 +292,11 @@ public class BuildLogic : MonoBehaviour {
                 curClickData.selectedUIObject.GetComponent<BaseButton>().
                    no_effect();
                 curClickData.selectedUIObject = null;
+            }
+            if (buildingBlock != null)
+            {
+                buildingBlock.SetActive(false);
+                buildingBlock = null;
             }
         }
         else
