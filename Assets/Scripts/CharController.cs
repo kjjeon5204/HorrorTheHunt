@@ -131,10 +131,11 @@ public class CharController : MonoBehaviour {
 	}
 	
 
-	void Lean() {
+	void Lean() {     
 		if (inputMovement.x > 0 && transform.rotation.z < 50) {
 			if (inputMovement.z < 0) {
-				transform.Rotate (0, 0, 720f * Time.deltaTime);
+				Quaternion newRotation = Quaternion.AngleAxis(720, Vector3.forward);
+				transform.rotation = Quaternion.Slerp(transform.rotation, newRotation, .5f); 
 			}
 			else {
 				transform.Rotate(0, 0, -720f * Time.deltaTime);
