@@ -2,16 +2,45 @@
 using System.Collections;
 
 public class Tiles : MonoBehaviour {
-	public bool initialized = false;
+    public Color occupiedColor;
+    public Color selectedColor;
+    public Color unoccupiedColor;
+    public Color unbuildableColor;
+
+	bool initialized = true;
+    bool initialized2 = false;
 	public TileData myData;
+
+    public TileStatus get_tile_status()
+    {
+        return myData.currentTileStatus;
+    }
 
     public void reset_tile()
     {
-        initialized = false;
+        initialized = true;
         if (myData.occupyingObject == null)
         {
             myData.currentTileStatus = TileStatus.OPEN;
         }
+        if (myData.currentTileStatus == TileStatus.OPEN)
+        {
+            renderer.material.SetColor("_TintColor", unoccupiedColor);
+        }
+        if (myData.currentTileStatus == TileStatus.UNBUILDABLE)
+        {
+            renderer.material.SetColor("_TintColor", unbuildableColor);
+        }
+        if (myData.currentTileStatus == TileStatus.TURRET ||
+            myData.currentTileStatus == TileStatus.WALL)
+        {
+            renderer.material.SetColor("_TintColor", occupiedColor);
+        }
+    }
+
+    public void set_selected_color()
+    {
+        gameObject.renderer.material.SetColor("_TintColor", selectedColor);
     }
 
 	void OnTriggerEnter(Collider objectOnTile) {
@@ -34,11 +63,17 @@ public class Tiles : MonoBehaviour {
             }
         }
 	}
+
+    void Start()
+    {
+       
+    }
 	
 	// Update is called once per frame
 	void Update () {
-        if (initialized == false)
+        if (initialized == true && initialized2 == false)
         {
+            initialized2 = true;
             reset_tile();
         }
 	}

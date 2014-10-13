@@ -39,7 +39,7 @@ public class BuildLogic : MonoBehaviour {
 
     bool runFirst = true;
 
-    public GameObject buildingBlock;
+    GameObject buildingBlock;
 
     public void initialize_tiles_first()
     {
@@ -47,7 +47,7 @@ public class BuildLogic : MonoBehaviour {
         float xStartVal = - totalLength / 2.0f;
         float initialXVal = xStartVal;
         float zStartVal = totalLength / 2.0f;
-        Vector3 spawnPos = new Vector3(xStartVal + tileLength / 2.0f, 0.0f,
+        Vector3 spawnPos = new Vector3(xStartVal + tileLength / 2.0f, 0.1f,
             zStartVal - tileLength / 2.0f);
         tiles = new Tiles[tileCount * tileCount];
         for (int ctr = 0; ctr < tiles.Length; ctr++)
@@ -61,7 +61,7 @@ public class BuildLogic : MonoBehaviour {
                 xStartVal = initialXVal;
             }
             //Calculate new spawn point
-            spawnPos = new Vector3(xStartVal + tileLength / 2.0f, 0.0f,
+            spawnPos = new Vector3(xStartVal + tileLength / 2.0f, 0.1f,
                 zStartVal - tileLength / 2.0f);
         }
     }
@@ -95,12 +95,14 @@ public class BuildLogic : MonoBehaviour {
             initialize_tiles_first();
             runFirst = false;
         }
+        uiCam.gameObject.SetActive(true);
         tile_switch(true);
         reset_tiles();
         timer = 120.0f;
 	}
 
 	public void end_build_phase() {
+        uiCam.gameObject.SetActive(false);
         tile_switch(false);
 	}
 
@@ -114,17 +116,19 @@ public class BuildLogic : MonoBehaviour {
         RaycastHit hitDetector;
         if (Physics.Raycast(ray, out hitDetector))
         {
-            Debug.Log("object touched: " + hitDetector.collider.gameObject);
             if (hitDetector.collider.gameObject.tag == "Tile")
             {
                 if (currentTouchingTile != null &&
                     currentTouchingTile != hitDetector.collider.gameObject)
                 {
-                    currentTouchingTile.renderer.enabled = true;
+                    currentTouchingTile.GetComponent<Tiles>().reset_tile();
                 }
                 currentTouchingTile = hitDetector.collider.gameObject;
-                currentTouchingTile.renderer.enabled = false;
-                buildingBlock.transform.position = currentTouchingTile.transform.position;
+                currentTouchingTile.GetComponent<Tiles>().set_selected_color();
+                if (buildingBlock != null)
+                {
+                    buildingBlock.transform.position = currentTouchingTile.transform.position;
+                }
             }
         }
         else
