@@ -2,6 +2,8 @@
 using System.Collections;
 
 public class Tiles : MonoBehaviour {
+    public GameObject buildEffect;
+
     public Color occupiedColor;
     public Color selectedColor;
     public Color unoccupiedColor;
@@ -18,6 +20,8 @@ public class Tiles : MonoBehaviour {
 
     public void build_on_tile(GameObject inputObject)
     {
+        
+        Instantiate(buildEffect, collider.bounds.center, transform.rotation);
         inputObject.transform.position = transform.position;
         NonMovingObject scriptAcc = inputObject.GetComponent<NonMovingObject>();
         scriptAcc.enabled = true;
