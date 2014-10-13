@@ -2,12 +2,19 @@
 using System.Collections;
 
 public class BattleSceneLogic : MonoBehaviour {
+    public float timer;
+
 	public bool run_battle() {
-		if (/*end condition*/true) {
+		if (timer < 0) {
 			return true;
 		}
 		return false;
 	}
+
+    public void initialize_combat()
+    {
+        timer = 180.0f;
+    }
 
 	// Use this for initialization
 	void Start () {
@@ -16,6 +23,6 @@ public class BattleSceneLogic : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
+        timer -= Time.deltaTime;
 	}
 }
