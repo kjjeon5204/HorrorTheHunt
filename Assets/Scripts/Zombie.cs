@@ -15,27 +15,38 @@ public class Zombie : Enemy
     public AnimationClip MoveLoop;
     public AnimationClip AttackBegin;
     public AnimationClip AttackEnd;
-
+    public AnimationClip Idle;
     //private state vars
-    private ZombieState state = ZombieState.Idle;
+    private ZombieState state = ZombieState.Moving;
     private GameObject Target = null;
     private bool hasAppliedDamage = false;
 	// Use this for initialization
-	void Start () {
-
+	void Start ()
+	{
+	
 	}
 	
 	// Update is called once per frame
-	void Update () {
-	    base.Update();
+	public override void Update () {
+        base.Update();
+	    if (dead)
+	    {
+	        return;
+	    }
 	    var anim = GetComponent<Animation>();
 	    switch (state)
 	    {
 	        case ZombieState.Idle:
+	            anim.Play(Idle.name);
 	            break;
 	        case ZombieState.Attacking:
-	            if (!anim.isPlaying)
+	            if (Target == null)
 	            {
+	                state = ZombieState.Moving;
+	            }
+	            else if (!anim.isPlaying)
+	            {
+	                hasAppliedDamage = false;
 	                anim.PlayQueued(AttackBegin.name);
 	                anim.PlayQueued(AttackEnd.name);
                 }
@@ -51,26 +62,42 @@ public class Zombie : Enemy
 	        case ZombieState.Moving:
                 anim.Play(MoveLoop.name);
 	            transform.position = Vector3.MoveTowards(transform.position, MoveTarget.transform.position, speed*Time.deltaTime);
+	            var q = Quaternion.LookRotation(MoveTarget.transform.position - transform.position);
+	            transform.rotation = Quaternion.RotateTowards(transform.rotation, q, 45.0f * Time.deltaTime);
 	            break;
 	        default:
 	            throw new ArgumentOutOfRangeException();
 	    }
+        
 
 	}
 
-    void OnCollisionEnter(Collision other)
+    public override void OnTriggerEnter(Collider other)
     {
+        base.OnTriggerEnter(other);
         if (other.gameObject.CompareTag("Wall") || other.gameObject.CompareTag("Turret"))
         {
-            var anim = GetComponent<Animation>();
-            anim.PlayQueued(MoveEnd.name);
+            Target = other.gameObject;
             state = ZombieState.Attacking;
 
         }
     }
 
+    void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject == Target)
+        {
+            state = ZombieState.Moving;
+            hasAppliedDamage = false;
+            Target = null;
+        }
+    }
     private void ApplyDamageTo(GameObject target)
     {
-        //TODO: write damage application logic
+        var nonMoving = target.GetComponent<NonMovingObject>();
+        if (nonMoving)
+        {
+            nonMoving.apply_damage(damage);
+        }
     }
 }

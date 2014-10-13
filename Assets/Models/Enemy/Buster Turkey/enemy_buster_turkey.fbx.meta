@@ -1,0 +1,514 @@
+fileFormatVersion: 2
+guid: 27edc58980b89c241a9892c0f8719dc5
+ModelImporter:
+  serializedVersion: 16
+  fileIDToRecycleName:
+    100000: body
+    100002: bustercannon
+    100004: bustercannon1
+    100006: //RootNode
+    100008: head
+    100010: Lfoot
+    100012: Lhip
+    100014: Lknee
+    100016: missilelauncher
+    100018: neck
+    100020: neck2
+    100022: Rfoot
+    100024: Rhip
+    100026: Rknee
+    100028: tailfeather
+    100030: turkey
+    400000: body
+    400002: bustercannon
+    400004: bustercannon1
+    400006: //RootNode
+    400008: head
+    400010: Lfoot
+    400012: Lhip
+    400014: Lknee
+    400016: missilelauncher
+    400018: neck
+    400020: neck2
+    400022: Rfoot
+    400024: Rhip
+    400026: Rknee
+    400028: tailfeather
+    400030: turkey
+    2300000: bustercannon
+    2300002: bustercannon1
+    3300000: bustercannon
+    3300002: bustercannon1
+    4300000: turkey
+    4300002: bustercannon
+    4300004: bustercannon1
+    7400000: idle
+    7400002: movestart
+    7400004: moveloop
+    7400006: movend
+    7400008: attackstart
+    7400010: attackend
+    7400012: death
+    9500000: //RootNode
+    11100000: //RootNode
+    13700000: turkey
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: idle
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 25
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: body
+        weight: 1
+      - path: body/bustercannon
+        weight: 1
+      - path: body/bustercannon1
+        weight: 1
+      - path: body/Lhip
+        weight: 1
+      - path: body/Lhip/Lknee
+        weight: 1
+      - path: body/Lhip/Lknee/Lfoot
+        weight: 1
+      - path: body/neck
+        weight: 1
+      - path: body/neck/missilelauncher
+        weight: 1
+      - path: body/neck/neck2
+        weight: 1
+      - path: body/neck/neck2/head
+        weight: 1
+      - path: body/Rhip
+        weight: 1
+      - path: body/Rhip/Rknee
+        weight: 1
+      - path: body/Rhip/Rknee/Rfoot
+        weight: 1
+      - path: body/tailfeather
+        weight: 1
+      - path: turkey
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: movestart
+      takeName: Take 001
+      firstFrame: 25
+      lastFrame: 30
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: body
+        weight: 1
+      - path: body/bustercannon
+        weight: 1
+      - path: body/bustercannon1
+        weight: 1
+      - path: body/Lhip
+        weight: 1
+      - path: body/Lhip/Lknee
+        weight: 1
+      - path: body/Lhip/Lknee/Lfoot
+        weight: 1
+      - path: body/neck
+        weight: 1
+      - path: body/neck/missilelauncher
+        weight: 1
+      - path: body/neck/neck2
+        weight: 1
+      - path: body/neck/neck2/head
+        weight: 1
+      - path: body/Rhip
+        weight: 1
+      - path: body/Rhip/Rknee
+        weight: 1
+      - path: body/Rhip/Rknee/Rfoot
+        weight: 1
+      - path: body/tailfeather
+        weight: 1
+      - path: turkey
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: moveloop
+      takeName: Take 001
+      firstFrame: 30
+      lastFrame: 50
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: body
+        weight: 1
+      - path: body/bustercannon
+        weight: 1
+      - path: body/bustercannon1
+        weight: 1
+      - path: body/Lhip
+        weight: 1
+      - path: body/Lhip/Lknee
+        weight: 1
+      - path: body/Lhip/Lknee/Lfoot
+        weight: 1
+      - path: body/neck
+        weight: 1
+      - path: body/neck/missilelauncher
+        weight: 1
+      - path: body/neck/neck2
+        weight: 1
+      - path: body/neck/neck2/head
+        weight: 1
+      - path: body/Rhip
+        weight: 1
+      - path: body/Rhip/Rknee
+        weight: 1
+      - path: body/Rhip/Rknee/Rfoot
+        weight: 1
+      - path: body/tailfeather
+        weight: 1
+      - path: turkey
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: movend
+      takeName: Take 001
+      firstFrame: 50
+      lastFrame: 60
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: body
+        weight: 1
+      - path: body/bustercannon
+        weight: 1
+      - path: body/bustercannon1
+        weight: 1
+      - path: body/Lhip
+        weight: 1
+      - path: body/Lhip/Lknee
+        weight: 1
+      - path: body/Lhip/Lknee/Lfoot
+        weight: 1
+      - path: body/neck
+        weight: 1
+      - path: body/neck/missilelauncher
+        weight: 1
+      - path: body/neck/neck2
+        weight: 1
+      - path: body/neck/neck2/head
+        weight: 1
+      - path: body/Rhip
+        weight: 1
+      - path: body/Rhip/Rknee
+        weight: 1
+      - path: body/Rhip/Rknee/Rfoot
+        weight: 1
+      - path: body/tailfeather
+        weight: 1
+      - path: turkey
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: attackstart
+      takeName: Take 001
+      firstFrame: 60
+      lastFrame: 65
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: body
+        weight: 1
+      - path: body/bustercannon
+        weight: 1
+      - path: body/bustercannon1
+        weight: 1
+      - path: body/Lhip
+        weight: 1
+      - path: body/Lhip/Lknee
+        weight: 1
+      - path: body/Lhip/Lknee/Lfoot
+        weight: 1
+      - path: body/neck
+        weight: 1
+      - path: body/neck/missilelauncher
+        weight: 1
+      - path: body/neck/neck2
+        weight: 1
+      - path: body/neck/neck2/head
+        weight: 1
+      - path: body/Rhip
+        weight: 1
+      - path: body/Rhip/Rknee
+        weight: 1
+      - path: body/Rhip/Rknee/Rfoot
+        weight: 1
+      - path: body/tailfeather
+        weight: 1
+      - path: turkey
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: attackend
+      takeName: Take 001
+      firstFrame: 66
+      lastFrame: 75
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: body
+        weight: 1
+      - path: body/bustercannon
+        weight: 1
+      - path: body/bustercannon1
+        weight: 1
+      - path: body/Lhip
+        weight: 1
+      - path: body/Lhip/Lknee
+        weight: 1
+      - path: body/Lhip/Lknee/Lfoot
+        weight: 1
+      - path: body/neck
+        weight: 1
+      - path: body/neck/missilelauncher
+        weight: 1
+      - path: body/neck/neck2
+        weight: 1
+      - path: body/neck/neck2/head
+        weight: 1
+      - path: body/Rhip
+        weight: 1
+      - path: body/Rhip/Rknee
+        weight: 1
+      - path: body/Rhip/Rknee/Rfoot
+        weight: 1
+      - path: body/tailfeather
+        weight: 1
+      - path: turkey
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: death
+      takeName: Take 001
+      firstFrame: 75
+      lastFrame: 100
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: body
+        weight: 1
+      - path: body/bustercannon
+        weight: 1
+      - path: body/bustercannon1
+        weight: 1
+      - path: body/Lhip
+        weight: 1
+      - path: body/Lhip/Lknee
+        weight: 1
+      - path: body/Lhip/Lknee/Lfoot
+        weight: 1
+      - path: body/neck
+        weight: 1
+      - path: body/neck/missilelauncher
+        weight: 1
+      - path: body/neck/neck2
+        weight: 1
+      - path: body/neck/neck2/head
+        weight: 1
+      - path: body/Rhip
+        weight: 1
+      - path: body/Rhip/Rknee
+        weight: 1
+      - path: body/Rhip/Rknee/Rfoot
+        weight: 1
+      - path: body/tailfeather
+        weight: 1
+      - path: turkey
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 1
+  additionalBone: 0
+  userData: 

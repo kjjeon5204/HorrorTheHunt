@@ -19,6 +19,18 @@ public class Tiles : MonoBehaviour {
     public void build_on_tile(GameObject inputObject)
     {
         inputObject.transform.position = transform.position;
+        NonMovingObject scriptAcc = inputObject.GetComponent<NonMovingObject>();
+        scriptAcc.enabled = true;
+        scriptAcc.play_spawn_animation();
+        myData.occupyingObject = inputObject;
+        if (inputObject.tag == "Wall")
+        {
+            myData.currentTileStatus = TileStatus.WALL;
+        }
+        else if (inputObject.tag == "Turret")
+        {
+            myData.currentTileStatus = TileStatus.TURRET;
+        }
         initialized2 = false;
     }
 
@@ -50,7 +62,8 @@ public class Tiles : MonoBehaviour {
     }
 
 	void OnTriggerEnter(Collider objectOnTile) {
-        if ((objectOnTile.gameObject.tag == "Turret" || objectOnTile.gameObject.tag == "Wall"))
+        if ((objectOnTile.gameObject.tag == "Turret" || objectOnTile.gameObject.tag == "Wall" ||
+            objectOnTile.gameObject.tag == "UnBuildable"))
         {
             initialized = true;
             myData.occupyingObject = objectOnTile.gameObject;
@@ -62,10 +75,10 @@ public class Tiles : MonoBehaviour {
             {
                 myData.currentTileStatus = TileStatus.WALL;
             }
-            if (objectOnTile.gameObject.tag == "Unbuildable")
+            if (objectOnTile.gameObject.tag == "UnBuildable")
             {
                 myData.currentTileStatus = TileStatus.UNBUILDABLE;
-                myData.occupyingObject.collider.enabled = false;
+                //myData.occupyingObject.collider.enabled = false;
             }
         }
 	}

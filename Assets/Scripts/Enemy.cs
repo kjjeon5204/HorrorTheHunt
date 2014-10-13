@@ -8,14 +8,14 @@ public class Enemy : MonoBehaviour
     public int health = 100;
     public int speed = 10;
     public int damage = 100;
-    private bool dead = false;
+    protected bool dead = false;
+
     public void ApplyDamage(int amount)
     {
         health -= amount;
         if (health <= 0)
         {
-            var animation = GetComponent<Animation>();
-            animation.PlayQueued("death");
+            animation.Play("death");
             dead = true;
         }
     }
@@ -23,12 +23,20 @@ public class Enemy : MonoBehaviour
 	void Start () {
 	
 	}
-	
+
+    public virtual void OnTriggerEnter(Collider other)
+    {
+        var bullet = other.gameObject.GetComponent<Bullet>();
+        if (bullet)
+        {
+            ApplyDamage(bullet.Damage);
+            Destroy(bullet);
+        }
+    }
 	// Update is called once per frame
-    public void Update ()
+    public virtual void Update ()
 	{
-	    var anim = GetComponent<Animation>();
-	    if (dead && !anim.IsPlaying("death"))
+	    if (dead && !animation.isPlaying)
 	    {
             Destroy(gameObject);
 	    }
