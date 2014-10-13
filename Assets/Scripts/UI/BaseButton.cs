@@ -5,7 +5,8 @@ public class BaseButton : MonoBehaviour {
     public enum KeyType
     {
         BUILDOPTION,
-        SKIP
+        SKIP,
+        BACKTOMENU
     }
     public KeyType curKeyType;
 
