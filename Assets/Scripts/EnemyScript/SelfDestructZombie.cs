@@ -9,6 +9,8 @@ public class SelfDestructZombie : Enemy
     public AnimationClip MoveLoop;
     public AnimationClip Idle;
     public GameObject selfDestructEffect;
+    
+
     //private state vars
     private ZombieState state = ZombieState.Moving;
     private GameObject Target = null;
@@ -38,19 +40,16 @@ public class SelfDestructZombie : Enemy
                 {
                     state = ZombieState.Moving;
                 }
-                else
+                else if (!anim.isPlaying)
                 {
+                    hasAppliedDamage = false;
+                    //anim.PlayQueued(AttackBegin.name);
+                    //anim.PlayQueued(AttackEnd.name);
                     ApplyDamageTo(Target);
                     Instantiate(selfDestructEffect, transform.position, Quaternion.identity);
                     Destroy(gameObject);
                 }
                     /*
-                else if (!anim.isPlaying)
-                {
-                    hasAppliedDamage = false;
-                    anim.PlayQueued(AttackBegin.name);
-                    anim.PlayQueued(AttackEnd.name);
-                }
                 else if (anim.IsPlaying(AttackEnd.name))
                 {
                     if (!hasAppliedDamage)
@@ -80,6 +79,8 @@ public class SelfDestructZombie : Enemy
         base.OnTriggerEnter(other);
         if (other.gameObject.CompareTag("Wall") || other.gameObject.CompareTag("Turret"))
         {
+
+            Debug.Log("I Kill you all!");
             Target = other.gameObject;
             state = ZombieState.Attacking;
 
@@ -87,6 +88,7 @@ public class SelfDestructZombie : Enemy
         var player = other.gameObject.GetComponent<CharController>();
         if (player)
         {
+            Debug.Log("I Kill you all!");
             Target = other.gameObject;
             state = ZombieState.Attacking;
 
