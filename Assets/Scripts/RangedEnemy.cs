@@ -51,7 +51,7 @@ public class RangedEnemy : Enemy
     {
         var dir = Target.transform.position - transform.position;
         var dist = dir.magnitude;
-        var q = Quaternion.LookRotation(MoveTarget.transform.position - transform.position);
+        var q = Quaternion.LookRotation(Target.transform.position - transform.position);
         var angle = Quaternion.Angle(q, transform.rotation);
         if (dist <= Range && angle <= 1.0f)
         {
@@ -75,6 +75,14 @@ public class RangedEnemy : Enemy
 
     protected virtual void HandleAttack()
     {
+        var q = Quaternion.LookRotation(Target.transform.position - transform.position);
+        var angle = Quaternion.Angle(q, transform.rotation);
+        var dir = Target.transform.position - transform.position;
+        var dist = dir.magnitude;
+        if (angle > 1.0f || dist > Range)
+        {
+            state = RangedState.Moving;
+        }
     }
 
     private void HandleAttackTimer()

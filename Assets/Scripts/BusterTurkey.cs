@@ -10,6 +10,7 @@ public class BusterTurkey : RangedEnemy
     public float BulletSpeed = 1000.0f;
     protected override void HandleAttack()
     {
+        base.HandleAttack();
         lastTurret = (lastTurret + 1)%Turrets.Count;
         var turret = Turrets[lastTurret].transform;
         var bullet = (GameObject)Instantiate(projectile, turret.position, turret.rotation);

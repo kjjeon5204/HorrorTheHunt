@@ -20,6 +20,7 @@ public class ZombieTurkey : RangedEnemy
 
     protected override void HandleAttack()
     {
+        base.HandleAttack();
         var bullet = (GameObject) Instantiate(Projectile,
             Turret.transform.position,
             Turret.transform.rotation);
