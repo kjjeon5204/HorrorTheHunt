@@ -17,21 +17,28 @@ public class Bullet : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
+        bool didDamage = false;
         var player = other.gameObject.GetComponent<CharController>();
         if (player)
         {
             player.ApplyDamage(Damage);
+            didDamage = true;
         }
         var staticObj = other.gameObject.GetComponent<NonMovingObject>();
         if (staticObj)
         {
             staticObj.apply_damage(Damage);
+            didDamage = true;
         }
-        if (DeathEffect)
+        if (didDamage)
         {
-            Instantiate(DeathEffect, transform.position, transform.rotation);
+            if (DeathEffect)
+            {
+                Instantiate(DeathEffect, transform.position, transform.rotation);
+            }
+            Destroy(this);
         }
-        Destroy(gameObject);
+
 
     }
 }
