@@ -9,6 +9,7 @@ public enum ObjectType
 
 public class NonMovingObject : MonoBehaviour {
     public int hp;
+    public int maxHP;
     public int buyPrice;
     public int sellPrice;
 
@@ -20,6 +21,11 @@ public class NonMovingObject : MonoBehaviour {
     public void apply_damage(int damage)
     {
         hp -= damage;
+    }
+
+    public float get_remaining_health()
+    {
+        return 1.0f * (float)hp / (float)maxHP;
     }
 
     public void play_spawn_animation()
