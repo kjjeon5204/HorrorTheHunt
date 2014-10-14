@@ -27,7 +27,8 @@ public class CharController : MonoBehaviour {
 	private float shootTime;
 	public float shootInterval = .5f;
 	public Transform bulletSpawn;
-	public AudioClip audioSource;
+	public AudioClip audioBullet;
+	public AudioClip audioSlash;
 	public GameObject barrel;
 	public GameObject muzzleFlash;
 	
@@ -53,7 +54,9 @@ public class CharController : MonoBehaviour {
 		mainCamera = (GameObject) GameObject.FindWithTag ("MainCamera");
 		meleeCDTracker = meleeCD + Time.time;
 		maxHP = playerHP;
-		bool animation1 = true, animation2 = true, animation3 = true;
+		animation1 = true; 
+		animation2 = true; 
+		animation3 = true;
 	}
 	
 	//Update called once per frame
@@ -64,13 +67,14 @@ public class CharController : MonoBehaviour {
 				dead = true;
 			}
 		}
-		
+		if (!animation.IsPlaying("slashfire") && !animation.IsPlaying ("slashend")){
+			LookAtMouse();
+			AnimateMove ();
+		}
 		GetInput();
-		LookAtMouse();
 		HandleCamera();
 		FireCheck ();
-		AnimateMove ();
-		
+			
 	}
 	
 	//Fixed Update updates 50 fps. For physics calculations
@@ -139,36 +143,19 @@ public class CharController : MonoBehaviour {
 				Object spotlight = Instantiate (muzzleFlash, bulletSpawn.position, bulletSpawn.rotation);
 				Rigidbody bullet = (Rigidbody) Instantiate(bulletPrefab, bulletSpawn.position, bulletSpawn.rotation);
 				bullet.rigidbody.AddForce(transform.forward * bulletSpeed);
-				audio.PlayOneShot(audioSource, 10f);        //bullet sound
+				audio.PlayOneShot(audioBullet, 100f);        //bullet sound
 				Physics.IgnoreCollision(bullet.collider, transform.root.collider);    //ignore hero collision
 				shootTime = Time.time + shootInterval;
 			}
 		}
 		if (Input.GetButton ("Fire2")) {
-			Debug.Log ("Fire2 activated");
-			Debug.Log (meleeCDTracker);
-			Debug.Log (Time.time);
 			if (Time.time > meleeCDTracker) {
-				if (animation1 == true) {
-					Debug.Log ("animation1 played");
-					animation.PlayQueued ("slashstart");
-					animation1 = false;
-				}
-				else if (!animation.IsPlaying ("slashstart") && animation2 == true) {
-					Debug.Log ("animation2 played");
-					animation.CrossFade ("slashfire");
-					Object meleeAttack = Instantiate(melee, bulletSpawn.position, bulletSpawn.rotation);
-					animation2 = false;
-				}
-				else if (!animation.IsPlaying("slashfire") && animation3 == true) {
-					animation.CrossFade ("slashend");
-					if (!animation.IsPlaying("slashend")) {
-						animation1 = true;
-						animation2 = true;
-						animation3 = true;
-						meleeCDTracker = Time.time + meleeCD;
-					}
-				}
+				animation.Play ("slashfire");
+				Object meleeAttack = Instantiate(melee, bulletSpawn.position, bulletSpawn.rotation);
+				audio.PlayOneShot(audioSlash, 100f);
+				animation.PlayQueued("slashend");
+				meleeCDTracker = meleeCD + Time.time;
+				
 			}
 		}
 	}
