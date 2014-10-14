@@ -36,7 +36,7 @@ public class CharController : MonoBehaviour {
 	bool attacking = false;
 	float meleeCD = 1f;
 	float meleeCDTracker;
-	bool animation1, animation2, animation3;
+
 	
 	
 	public virtual void OnTriggerEnter(Collider collider) {
@@ -54,9 +54,6 @@ public class CharController : MonoBehaviour {
 		mainCamera = (GameObject) GameObject.FindWithTag ("MainCamera");
 		meleeCDTracker = meleeCD + Time.time;
 		maxHP = playerHP;
-		animation1 = true; 
-		animation2 = true; 
-		animation3 = true;
 	}
 	
 	//Update called once per frame
@@ -151,6 +148,7 @@ public class CharController : MonoBehaviour {
 		if (Input.GetButton ("Fire2")) {
 			if (Time.time > meleeCDTracker) {
 				animation.Play ("slashfire");
+
 				Object meleeAttack = Instantiate(melee, bulletSpawn.position + Vector3.forward * 2, bulletSpawn.rotation);
 				audio.PlayOneShot(audioSlash, 100f);
 				animation.PlayQueued("slashend");

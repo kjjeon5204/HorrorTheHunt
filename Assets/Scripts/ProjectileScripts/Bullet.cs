@@ -22,10 +22,16 @@ public class Bullet : MonoBehaviour
         {
             player.ApplyDamage(Damage);
         }
+        var staticObj = other.gameObject.GetComponent<NonMovingObject>();
+        if (staticObj)
+        {
+            staticObj.apply_damage(Damage);
+        }
         if (DeathEffect)
         {
-            DeathEffect.SetActive(true);
+            Instantiate(DeathEffect, transform.position, transform.rotation);
         }
+        Destroy(gameObject);
 
     }
 }
