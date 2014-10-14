@@ -1,7 +1,8 @@
 fileFormatVersion: 2
 guid: eaf161b33ffaf9a42ac41686ac0283f8
 TextureImporter:
-  fileIDToRecycleName: {}
+  fileIDToRecycleName:
+    21300000: icon_wall_crossstone
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0

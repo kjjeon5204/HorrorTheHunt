@@ -26,6 +26,7 @@ public class BuildLogic : MonoBehaviour {
     //***********Building Handler!**************
     //******************************************
     public Camera buildCam;
+    public GameObject buildCamPosHolder;
     public GameObject myWitch;
     public GameObject witchTeleportEffect;
     public GameObject witchBuildEffect;
@@ -153,8 +154,8 @@ public class BuildLogic : MonoBehaviour {
         road_collider_switch (false);
         uiCam.gameObject.SetActive(false);
         tile_switch(false);
-        buildCam.transform.position = initalCamPos;
-        buildCam.transform.rotation = initialCamRot;
+        buildCam.transform.position = buildCamPosHolder.transform.position;
+        buildCam.transform.rotation = buildCamPosHolder.transform.rotation;
         myWitch.animation.Play("teleportcast");
         witchTeleportEffect.SetActive(true);
         endPhase = true;
@@ -352,7 +353,7 @@ public class BuildLogic : MonoBehaviour {
             screenMoveDir.x += curMousePos.x - 0.5f;
         }
         Vector3 localMove = buildCam.transform.InverseTransformDirection(screenMoveDir);
-        buildCam.transform.Translate(localMove.normalized * Time.deltaTime * 80.0f);
+        buildCam.transform.Translate(localMove.normalized * Time.deltaTime * 40.0f);
 
     }
     
@@ -407,10 +408,29 @@ public class BuildLogic : MonoBehaviour {
                     {
                         if (buildingBlock != null && buildingBlock.activeInHierarchy == true)
                             buildingBlock.SetActive(false);
-                        buildingBlock = uiObjectTemp.get_button_object();
-                        buildingBlock.SetActive(true);
-                    }
 
+                        BuildOption myOption = uiObjectTemp.GetComponent<BuildOption>();
+                        //Check for price
+                        if (myOption.priceReq <= currency)
+                        {
+                            buildingBlock = uiObjectTemp.get_button_object();
+                            buildingBlock.SetActive(true);
+                        }
+                        else
+                        {
+                            if (curClickData.selectedUIObject != null)
+                            {
+                                curClickData.selectedUIObject.GetComponent<BaseButton>().
+                                   no_effect();
+                                curClickData.selectedUIObject = null;
+                            }
+                            if (buildingBlock != null)
+                            {
+                                buildingBlock.SetActive(false);
+                                buildingBlock = null;
+                            }
+                        }
+                    }
                 }
 
                 //Build Handles
@@ -419,6 +439,8 @@ public class BuildLogic : MonoBehaviour {
                     Tiles tempTileHolder = currentTouchingTile.GetComponent<Tiles>();
                     if (tempTileHolder.get_tile_status() == TileStatus.OPEN)
                     {
+                        BuildOption myOption = curClickData.selectedUIObject.GetComponent<BuildOption>();
+                        currency -= myOption.priceReq;
                         witchBuildEffect.SetActive(true);
                         myWitch.animation.Play("constructioncast");
                         tempTileHolder.build_on_tile((GameObject)Instantiate(

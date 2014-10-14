@@ -35,7 +35,7 @@ public class BattleSceneLogic : MonoBehaviour {
     {
         mainCharacter.SetActive(true);
         combatUI.gameObject.SetActive(true);
-        timer = 120.0f;
+        timer = 30.0f;
         currency = inCurrency;
         spawner.gameObject.SetActive(true);
     }
@@ -77,7 +77,7 @@ public class BattleSceneLogic : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (playerDied == false)
+        if (playerDied == false &&  mainCharacter.GetComponent<CharController>().playerHP > 0)
         {
             timer -= Time.deltaTime;
             timerDisplay.text = ((int)(timer / 60)).ToString() +
