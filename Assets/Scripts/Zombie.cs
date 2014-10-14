@@ -65,10 +65,27 @@ public class Zombie : Enemy
 	            break;
 	        case ZombieState.Moving:
                 anim.Play(MoveLoop.name);
-	            transform.position = Vector3.MoveTowards(transform.position, MoveTarget.transform.position, speed*Time.deltaTime);
+	            var targetPos = Vector3.MoveTowards(transform.position, MoveTarget.transform.position, speed*Time.deltaTime);
 	            var q = Quaternion.LookRotation(MoveTarget.transform.position - transform.position);
 	            transform.rotation = Quaternion.RotateTowards(transform.rotation, q, 45.0f * Time.deltaTime);
-	            
+	            var targetDir = targetPos - transform.position;
+	            var targetDist = targetDir.magnitude;
+	            var hits = Physics.RaycastAll(new Ray(transform.position, targetDir), targetDist);
+	            bool dontmove = false;
+	            foreach (var elm in hits)
+	            {
+	                var go = elm.collider.gameObject;
+	                if (go.CompareTag("Wall") || go.CompareTag("Turret"))
+	                {
+	                    Target = go;
+	                    state = ZombieState.Attacking;
+	                    dontmove = true;
+	                }
+	            }
+	            if (!dontmove)
+	            {
+	                transform.position = targetPos;
+	            }
 	            if (dist <= Range)
 	            {
 	                Target = MoveTarget;
