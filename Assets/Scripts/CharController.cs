@@ -57,7 +57,7 @@ public class CharController : MonoBehaviour {
 		LookAtMouse();
 		HandleCamera();
 		Animate ();
-		Lean ();
+		//Lean ();
 	}
 	
 	void FixedUpdate () {
@@ -132,7 +132,6 @@ public class CharController : MonoBehaviour {
 	}
 	
 	void Animate() {
-		Lean ();
 		if (localTransform.z > 0) {
 			animation.CrossFade("moveloop");
 		}
@@ -144,7 +143,7 @@ public class CharController : MonoBehaviour {
 		}  
 	}
 	
-
+	/*
 	void Lean() {     
 		if (inputMovement.x > 0 && transform.rotation.z < 50) {
 			if (inputMovement.z < 0) {
@@ -163,7 +162,7 @@ public class CharController : MonoBehaviour {
 			}
 		}
 	}
-	
+	*/
 	public void ApplyDamage(int amount)
 	{
 		playerHP -= amount;
