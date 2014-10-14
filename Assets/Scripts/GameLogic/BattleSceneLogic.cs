@@ -8,11 +8,13 @@ public class BattleSceneLogic : MonoBehaviour {
     public TextMesh currencyDisplay;
     public GameObject backToMenuButton;
     public GameObject mainCharacter;
+    public GameObject mainCharacterTeleportEffect;
 
     float timer;
     public TextMesh timerDisplay;
     int currency;
     bool playerDied = false;
+    bool endPhasePlayed = false;
 
     public int get_remaining_currency()
     {
@@ -39,15 +41,35 @@ public class BattleSceneLogic : MonoBehaviour {
         timer = 30.0f + 10.0f * waveCount;
         currency = inCurrency;
         spawner.gameObject.SetActive(true);
+        endPhasePlayed = false;
     }
 
     public void end_combat()
     {
-        mainCharacter.SetActive(false);
+        mainCharacter.GetComponent<CharController>().enabled = false;
         combatUI.gameObject.SetActive(false);
         spawner.NextWave();
         spawner.DestoryMobs();
         spawner.gameObject.SetActive(false);
+        mainCharacter.animation.Play("teleportcast");
+        mainCharacterTeleportEffect.SetActive(true);
+    }
+
+    public bool run_end_combat()
+    {
+        if (endPhasePlayed == false)
+        {
+            end_combat();
+            endPhasePlayed = true;
+        }
+        if (!mainCharacter.animation.IsPlaying("teleportcast"))
+        {
+            mainCharacterTeleportEffect.SetActive(false);
+            mainCharacter.GetComponent<CharController>().enabled = true;
+            mainCharacter.SetActive(false);
+            return true;
+        }
+        return false;
     }
 
     public void player_died()

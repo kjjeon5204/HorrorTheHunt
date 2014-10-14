@@ -25,10 +25,7 @@ public class Enemy : MonoBehaviour
                 currencyGameObj.add_currency(value);
             }
             animation.Play("death");
-            if (DeathEffect)
-            {
-                DeathEffect.SetActive(true);
-            }
+            
             dead = true;
         }
     }
@@ -52,6 +49,10 @@ public class Enemy : MonoBehaviour
 	{
 	    if (dead && !animation.isPlaying)
 	    {
+            if (DeathEffect)
+            {
+                GameObject.Instantiate(DeathEffect, transform.position, transform.rotation); ;
+            }
             Destroy(gameObject);
 	    }
 
