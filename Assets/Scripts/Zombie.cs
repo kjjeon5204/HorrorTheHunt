@@ -71,9 +71,8 @@ public class Zombie : Enemy
 
 	}
 
-    public override void OnTriggerEnter(Collider other)
+    public void OnCollisionEnter(Collision other)
     {
-        base.OnTriggerEnter(other);
         if (other.gameObject.CompareTag("Wall") || other.gameObject.CompareTag("Turret"))
         {
             Target = other.gameObject;
@@ -90,7 +89,7 @@ public class Zombie : Enemy
 
     }
 
-    void OnTriggerExit(Collider other)
+    void OnCollisionExit(Collision other)
     {
         if (other.gameObject == Target)
         {
