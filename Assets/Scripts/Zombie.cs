@@ -80,7 +80,14 @@ public class Zombie : Enemy
             state = ZombieState.Attacking;
 
         }
-        
+        var player = other.gameObject.GetComponent<CharController>();
+        if (player)
+        {
+            Target = other.gameObject;
+            state = ZombieState.Attacking;
+
+        }
+
     }
 
     void OnTriggerExit(Collider other)
