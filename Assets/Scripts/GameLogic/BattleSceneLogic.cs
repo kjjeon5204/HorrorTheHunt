@@ -34,6 +34,7 @@ public class BattleSceneLogic : MonoBehaviour {
     public void initialize_combat(int inCurrency)
     {
         mainCharacter.SetActive(true);
+        mainCharacter.GetComponent<CharController>().playerHP = 500;
         combatUI.gameObject.SetActive(true);
         timer = 30.0f;
         currency = inCurrency;
