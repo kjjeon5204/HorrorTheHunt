@@ -119,8 +119,8 @@ public class CharController : MonoBehaviour {
 	
 	//Transforms character based on the inputs
 	void ProcessMovement() {
-		//transform.Translate (localTransform.normalized * movespeed * Time.deltaTime);
-		rigidbody.AddForce (inputMovement.normalized * movespeed * Time.deltaTime);
+		transform.Translate (localTransform.normalized * movespeed * Time.deltaTime);
+		//rigidbody.AddForce (inputMovement.normalized * movespeed * Time.deltaTime);
 		LookAtMouse();
 		transform.position = new Vector3 (transform.position.x, 0 , transform.position.z);
 	}
@@ -149,7 +149,7 @@ public class CharController : MonoBehaviour {
 			if (Time.time > meleeCDTracker) {
 				animation.Play ("slashfire");
 
-				Object meleeAttack = Instantiate(melee, bulletSpawn.position + Vector3.forward * 2, bulletSpawn.rotation);
+				Object meleeAttack = Instantiate(melee, bulletSpawn.position + Vector3.forward * 4 + Vector3.right * 3, bulletSpawn.rotation);
 				audio.PlayOneShot(audioSlash, 100f);
 				animation.PlayQueued("slashend");
 				meleeCDTracker = meleeCD + Time.time;
