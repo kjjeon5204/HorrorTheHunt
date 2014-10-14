@@ -11,6 +11,7 @@ public class PumpkinTurret : NonMovingObject
     public int Damage = 10;
     public GameObject projectile;
     public GameObject muzzle;
+    private GameObject Target = null;
     private enum PumpkinState
     {
         Idle,
@@ -64,22 +65,25 @@ public class PumpkinTurret : NonMovingObject
 
     private void Attack()
     {
-        var target = FindTarget();
-        if (target == null)
+        if (Target == null)
+        {
+            Target = FindTarget();
+        }
+        if (Target == null)
         {
             return;
         }
         Debug.Log("Trigger Attack");
-        var q = Quaternion.LookRotation(target.transform.position - muzzle.transform.position);
+        var q = Quaternion.LookRotation(Target.transform.position - muzzle.transform.position);
         muzzle.transform.rotation = Quaternion.RotateTowards(muzzle.transform.rotation, q, 45.0f*Time.deltaTime);
         var angle = Quaternion.Angle(q, muzzle.transform.rotation);
         timeSinceLastAttack += Time.deltaTime;
         if (angle < 20.0f && timeSinceLastAttack >= AttackInterval)
         {
-            muzzle.transform.LookAt(target.collider.bounds.center);
+            muzzle.transform.LookAt(Target.collider.bounds.center);
             timeSinceLastAttack = 0.0f;
             var bullet = (GameObject)Instantiate(projectile, muzzle.transform.position, muzzle.transform.rotation);
-            var force = target.transform.position - muzzle.transform.position;
+            var force = Target.transform.position - muzzle.transform.position;
             bullet.GetComponent<Bullet>().Damage = Damage;
             force.Normalize();
             bullet.rigidbody.AddForce(muzzle.transform.forward * BulletForce);
