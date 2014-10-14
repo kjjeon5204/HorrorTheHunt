@@ -36,7 +36,7 @@ public class Enemy : MonoBehaviour
 
     public virtual void OnTriggerEnter(Collider other)
     {
-		var bullet = other.gameObject.GetComponent<Bullet>();
+		var bullet = other.gameObject.GetComponent<PlayerBullet>();
 		if (bullet)
         {
 			Object impact = Instantiate (hitEffect, bullet.transform.position, bullet.transform.rotation);
