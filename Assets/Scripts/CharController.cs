@@ -119,8 +119,8 @@ public class CharController : MonoBehaviour {
 	
 	//Transforms character based on the inputs
 	void ProcessMovement() {
-		//transform.Translate (localTransform.normalized * movespeed * Time.deltaTime);
-		rigidbody.AddForce (inputMovement.normalized * movespeed * Time.deltaTime);
+		transform.Translate (localTransform.normalized * movespeed * Time.deltaTime);
+		//rigidbody.AddForce (inputMovement.normalized * movespeed * Time.deltaTime);
 		LookAtMouse();
 		transform.position = new Vector3 (transform.position.x, 0 , transform.position.z);
 	}
