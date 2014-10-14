@@ -3,6 +3,7 @@ using System.Collections;
 
 public class CharController : MonoBehaviour {
 	public float playerHP;
+	public float maxHP;
 	protected bool dying = false;
 	protected bool dead = false;
 
@@ -28,7 +29,11 @@ public class CharController : MonoBehaviour {
 	public Transform bulletSpawn;
 	public GameObject barrel;
 	public GameObject muzzleFlash;
-			
+	
+	public GameObject melee;
+	bool attacking = false;
+	float meleeCD = 1f;
+	float meleeCDTracker;
 	
 	public virtual void OnTriggerEnter(Collider collider) {
 		var hit = collider.gameObject.GetComponent<Bullet>();
@@ -43,6 +48,8 @@ public class CharController : MonoBehaviour {
 	void Start () {
 		player = (GameObject) GameObject.FindWithTag ("Player");
 		mainCamera = (GameObject) GameObject.FindWithTag ("MainCamera");
+		meleeCDTracker = meleeCD + Time.time;
+		maxHP = playerHP;
 	}
 	
 	//Update called once per frame
@@ -127,7 +134,23 @@ public class CharController : MonoBehaviour {
 			}
 		}
 		if (Input.GetButton ("Fire2")) {
-			animation.Play ("slashstart");
+			if (!attacking) {
+				animation.PlayQueued ("slashstart", QueueMode.PlayNow);
+			}
+			attacking = true;
+			if (attacking && !animation.isPlaying) {
+				animation.PlayQueued ("slashfire", QueueMode.CompleteOthers);
+				
+				Rigidbody bullet = (Rigidbody) Instantiate(bulletPrefab, bulletSpawn.position, bulletSpawn.rotation);
+				bullet.transform.Translate(transform.forward * 5f * Time.deltaTime);
+				Physics.IgnoreCollision(bullet.collider, transform.root.collider);    //ignore hero collision
+				
+				if (!animation.IsPlaying("slashfire")) {
+					animation.PlayQueued ("slashend", QueueMode.CompleteOthers);
+					attacking = false;
+					meleeCDTracker = meleeCD + Time.time;
+				}
+			}
 		}
 	}
 	
