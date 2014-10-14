@@ -332,22 +332,22 @@ public class BuildLogic : MonoBehaviour {
     {
         Vector3 curMousePos = buildCam.ScreenToViewportPoint(Input.mousePosition);
         Vector3 screenMoveDir = Vector3.zero;
-        if (curMousePos.x > 0.9f)
+        if (curMousePos.x > 0.9f && buildCam.transform.position.x < 75.0f)
         {
             screenMoveDir.x += 0.5f;
             screenMoveDir.z += curMousePos.y - 0.5f;
         }
-        if (curMousePos.x < 0.1f)
-        {
+        if (curMousePos.x < 0.1f && buildCam.transform.position.x > - 75.0f)
+        { 
             screenMoveDir.x -= 0.5f;
             screenMoveDir.z += curMousePos.y - 0.5f;
         }
-        if (curMousePos.y > 0.9f)
+        if (curMousePos.y > 0.9f && buildCam.transform.position.z < 40.0f)
         {
             screenMoveDir.z += 0.5f;
             screenMoveDir.x += curMousePos.x - 0.5f;
         }
-        if (curMousePos.y < 0.1f)
+        if (curMousePos.y < 0.1f && buildCam.transform.position.z > -140.0f)
         {
             screenMoveDir.z -= 0.5f;
             screenMoveDir.x += curMousePos.x - 0.5f;
