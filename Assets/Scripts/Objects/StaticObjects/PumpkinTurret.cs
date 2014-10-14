@@ -85,7 +85,7 @@ public class PumpkinTurret : NonMovingObject
             timeSinceLastAttack = 0.0f;
             var bullet = (GameObject)Instantiate(projectile, muzzle.transform.position, muzzle.transform.rotation);
             var force = Target.transform.position - muzzle.transform.position;
-            bullet.GetComponent<Bullet>().Damage = Damage;
+            bullet.GetComponent<PlayerBullet>().Damage = Damage;
             force.Normalize();
             bullet.rigidbody.AddForce(muzzle.transform.forward * BulletForce);
         }
