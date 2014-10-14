@@ -11,6 +11,6 @@ public class TurretHP : MonoBehaviour {
         Vector3 tempHolder = transform.localScale;
         tempHolder.x = myTurret.get_remaining_health();
         transform.localScale = tempHolder;
-        transform.LookAt(Camera.main.transform);
+        //transform.LookAt(Camera.main.transform);
 	}
 }
