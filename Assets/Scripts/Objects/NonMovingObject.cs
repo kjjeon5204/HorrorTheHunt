@@ -42,7 +42,7 @@ public class NonMovingObject : MonoBehaviour {
         }
         else
         {
-            if (animation.IsPlaying(destructionAnimation.name))
+            if (!animation.IsPlaying(destructionAnimation.name))
             {
                 return true;
             }

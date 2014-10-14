@@ -62,16 +62,18 @@ public class GameController : MonoBehaviour {
             }
             if (battleLogic.run_battle())
             {
-                battleLogic.end_combat();
-                currency = battleLogic.get_remaining_currency();
-                battleLogic.enabled = false;
-                curPhase = GamePhase.TRANSITION;
-                phaseInitialized = false;
-                curProgress++;
-                if (curProgress == 5)
+                if (battleLogic.run_end_combat())
                 {
-                    storyInitialized = false;
-                    curPhase = GamePhase.STORY;
+                    currency = battleLogic.get_remaining_currency();
+                    battleLogic.enabled = false;
+                    curPhase = GamePhase.TRANSITION;
+                    phaseInitialized = false;
+                    curProgress++;
+                    if (curProgress == 5)
+                    {
+                        storyInitialized = false;
+                        curPhase = GamePhase.STORY;
+                    }
                 }
             }
         }

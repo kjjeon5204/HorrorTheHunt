@@ -132,6 +132,8 @@ public class BuildLogic : MonoBehaviour {
         endPhase = false;
         road_collider_switch(true);
         uiCam.gameObject.SetActive(true);
+        buildCam.transform.position = buildCamPosHolder.transform.position;
+        buildCam.transform.rotation = buildCamPosHolder.transform.rotation;
         tile_switch(true);
         reset_tiles();
         timer = 120.0f;
@@ -169,7 +171,7 @@ public class BuildLogic : MonoBehaviour {
         }
         else
         {
-            //witchTeleportEffect.SetActive(false);
+            witchTeleportEffect.SetActive(false);
             myWitch.SetActive(false);
             return true;
         }
