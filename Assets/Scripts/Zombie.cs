@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using System.Collections;
+using UnityEngine.SocialPlatforms;
 
 enum ZombieState
 {
@@ -19,6 +20,7 @@ public class Zombie : Enemy
     private ZombieState state = ZombieState.Moving;
     private GameObject Target = null;
     private bool hasAppliedDamage = false;
+    public float Range = 10.0f;
 	// Use this for initialization
 	void Start ()
 	{
@@ -33,13 +35,16 @@ public class Zombie : Enemy
 	        return;
 	    }
 	    var anim = GetComponent<Animation>();
+        var direction = MoveTarget.transform.position - transform.position;
+	    var dist = direction.magnitude;
 	    switch (state)
 	    {
 	        case ZombieState.Idle:
 	            anim.Play(Idle.name);
 	            break;
 	        case ZombieState.Attacking:
-	            if (Target == null)
+                
+	            if (Target == null || dist > Range)
 	            {
 	                state = ZombieState.Moving;
 	            }
@@ -63,6 +68,12 @@ public class Zombie : Enemy
 	            transform.position = Vector3.MoveTowards(transform.position, MoveTarget.transform.position, speed*Time.deltaTime);
 	            var q = Quaternion.LookRotation(MoveTarget.transform.position - transform.position);
 	            transform.rotation = Quaternion.RotateTowards(transform.rotation, q, 45.0f * Time.deltaTime);
+	            
+	            if (dist <= Range)
+	            {
+	                Target = MoveTarget;
+	                state = ZombieState.Attacking;
+	            }
 	            break;
 	        default:
 	            throw new ArgumentOutOfRangeException();
