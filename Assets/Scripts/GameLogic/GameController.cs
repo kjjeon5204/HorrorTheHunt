@@ -57,7 +57,7 @@ public class GameController : MonoBehaviour {
             if (phaseInitialized == false)
             {
                 battleLogic.enabled = true;
-                battleLogic.initialize_combat(currency);
+                battleLogic.initialize_combat(currency, curProgress);
                 phaseInitialized = true;
             }
             if (battleLogic.run_battle())

@@ -31,12 +31,12 @@ public class BattleSceneLogic : MonoBehaviour {
 		return false;
 	}
 
-    public void initialize_combat(int inCurrency)
+    public void initialize_combat(int inCurrency, int waveCount)
     {
         mainCharacter.SetActive(true);
         mainCharacter.GetComponent<CharController>().playerHP = 500;
         combatUI.gameObject.SetActive(true);
-        timer = 30.0f;
+        timer = 30.0f + 10.0f * waveCount;
         currency = inCurrency;
         spawner.gameObject.SetActive(true);
     }
