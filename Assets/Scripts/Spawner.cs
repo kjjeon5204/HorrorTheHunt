@@ -3,6 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 
 [System.Serializable]
+public struct SpawnInitialGroup
+{
+    public GameObject unit;
+    public int spawnCount;
+}
+
+
+[System.Serializable]
 public class SpawnerSettings
 {
     public GameObject ObjectToSpawn;
@@ -13,7 +21,7 @@ public class SpawnerSettings
 [System.Serializable]
 public class WaveSettings
 {
-    public List<SpawnerSettings> initialSpawn;
+    public List<SpawnInitialGroup> initialSpawn;
     public List<SpawnerSettings> Contents;
 }
 
@@ -39,8 +47,18 @@ public class Spawner : MonoBehaviour
 
     }
 
-    void OnEnable()
+    public void OnEnable()
     {
+        for (int ctr = 0; ctr < SpawnObjects[CurrentWave-1].initialSpawn.Count; ctr++)
+        {
+            for (int ctr2 = 0; ctr2 < SpawnObjects[CurrentWave-1].initialSpawn[ctr].spawnCount;
+                ctr2++)
+            {
+                int myStuff = Random.Range(0, SpawnPoints.Count);
+                ((GameObject)Instantiate(SpawnObjects[CurrentWave-1].initialSpawn[ctr].unit, SpawnPoints[myStuff].transform.position,
+                    Quaternion.identity)).GetComponent<Enemy>().MoveTarget = Player; ;
+            }
+        }
     }
 
     /// <summary>
