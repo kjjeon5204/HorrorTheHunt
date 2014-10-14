@@ -35,7 +35,7 @@ public class BattleSceneLogic : MonoBehaviour {
     {
         mainCharacter.SetActive(true);
         combatUI.gameObject.SetActive(true);
-        timer = 120.0f;
+        timer = 30.0f;
         currency = inCurrency;
         spawner.gameObject.SetActive(true);
     }
