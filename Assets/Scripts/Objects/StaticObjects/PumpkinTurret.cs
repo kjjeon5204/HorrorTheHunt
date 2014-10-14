@@ -76,7 +76,7 @@ public class PumpkinTurret : NonMovingObject
         timeSinceLastAttack += Time.deltaTime;
         if (angle < 20.0f && timeSinceLastAttack >= AttackInterval)
         {
-            muzzle.transform.LookAt(target.transform);
+            muzzle.transform.LookAt(target.collider.bounds.center);
             timeSinceLastAttack = 0.0f;
             var bullet = (GameObject)Instantiate(projectile, muzzle.transform.position, muzzle.transform.rotation);
             var force = target.transform.position - muzzle.transform.position;

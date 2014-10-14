@@ -1,26 +1,30 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+
 [System.Serializable]
 public class SpawnerSettings
 {
     public GameObject ObjectToSpawn;
     public float TimeToSpawn;
     public float TimeSinceSpawn;
-
 }
+
 [System.Serializable]
 public class WaveSettings
 {
+    public List<SpawnerSettings> initialSpawn;
     public List<SpawnerSettings> Contents;
 }
+
 [System.Serializable]
 public class Spawner : MonoBehaviour
 {
     public GameObject Player;
     public int CurrentWave = 1;
     public List<WaveSettings> SpawnObjects;
-    public List<GameObject> SpawnPoints; 
+    public List<GameObject> SpawnPoints;
+    bool initialSpawn = false;
 
     public void NextWave()
     {
@@ -30,9 +34,15 @@ public class Spawner : MonoBehaviour
             //we may want to do something or other
             //TODO: Handle this shit
         }
+        initialSpawn = false;
         CurrentWave++;
 
     }
+
+    void OnEnable()
+    {
+    }
+
     /// <summary>
     /// go back to the beginning of all the waves
     /// </summary>
