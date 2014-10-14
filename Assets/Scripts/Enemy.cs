@@ -12,7 +12,7 @@ public class Enemy : MonoBehaviour
     protected bool dead = false;
     public GameObject MoveTarget;
     public GameObject DeathEffect;
-    public GameObject hitEffect;
+    
     
     public void ApplyDamage(int amount)
     {
@@ -39,11 +39,10 @@ public class Enemy : MonoBehaviour
 
     public virtual void OnTriggerEnter(Collider other)
     {
-		var bullet = other.gameObject.GetComponent<Bullet>();
-		if (bullet)
+        var bullet = other.gameObject.GetComponent<Bullet>();
+        if (bullet)
         {
-			Object impact = Instantiate (hitEffect, bullet.transform.position, bullet.transform.rotation);
-			ApplyDamage(bullet.Damage);
+            ApplyDamage(bullet.Damage);
             Destroy(other.gameObject);
         }
     }
