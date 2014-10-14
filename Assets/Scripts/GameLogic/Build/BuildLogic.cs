@@ -353,7 +353,7 @@ public class BuildLogic : MonoBehaviour {
             screenMoveDir.x += curMousePos.x - 0.5f;
         }
         Vector3 localMove = buildCam.transform.InverseTransformDirection(screenMoveDir);
-        buildCam.transform.Translate(localMove.normalized * Time.deltaTime * 80.0f);
+        buildCam.transform.Translate(localMove.normalized * Time.deltaTime * 40.0f);
 
     }
     

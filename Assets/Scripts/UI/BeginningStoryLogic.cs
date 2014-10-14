@@ -1,0 +1,186 @@
+﻿using UnityEngine;
+using System.Collections;
+
+public class BeginningStoryLogic : MonoBehaviour {
+    public Sprite art1;
+    public Sprite art2;
+    public SpriteRenderer art;
+    public SpriteRenderer fadeScene;
+    float timeTracker;
+    bool phaseInitialized = false;
+    int tracker = 0;
+    Camera GUICam;
+
+    public void initialize_story()
+    {
+    }
+
+    void texture_resize(GameObject target, Rect targetSize)
+    {
+        SpriteRenderer targetSprite = target.GetComponent<SpriteRenderer>();
+        Vector3 targetPos = new Vector3(targetSize.center.x, 1.0f - targetSize.center.y, 10.0f);
+        target.transform.position = GUICam.ViewportToWorldPoint(targetPos);
+        Vector3 xMin = GUICam.WorldToViewportPoint(targetSprite.bounds.min);
+        Vector3 xMax = GUICam.WorldToViewportPoint(targetSprite.bounds.max);
+        Vector3 curSize = xMax - xMin;
+
+        float xScale = targetSize.width / curSize.x;
+        float yScale = targetSize.height / curSize.y;
+        Vector3 scaleFactor = new Vector3(xScale, yScale, 1.0f);
+        target.transform.localScale = Vector3.Scale(target.transform.localScale, scaleFactor);
+        //Debug.Log(scaleFactor);
+    }
+
+    public void fade_in1()
+    {
+        if (phaseInitialized == false)
+        {
+            art.sprite = art1;
+            timeTracker = Time.time + 3.0f;
+            phaseInitialized = true;
+        }
+        Color tempHolder = fadeScene.color;
+        tempHolder.a -= 0.3f * Time.deltaTime;
+        fadeScene.color = tempHolder;
+        if (Time.time > timeTracker)
+        {
+            tempHolder = fadeScene.color;
+            tempHolder.a = 0.0f;
+            fadeScene.color = tempHolder;
+            phaseInitialized = false;
+            tracker++;
+        }
+    }
+
+    public void firstStoryPhase()
+    {
+        if (phaseInitialized == false)
+        {
+            timeTracker = Time.time + 4.0f;
+            phaseInitialized = true;
+        }
+        if (Time.time > timeTracker)
+        {
+            phaseInitialized = false;
+            tracker++;
+        }
+    }
+
+    public void firstStoryFadeOut()
+    {
+        if (phaseInitialized == false)
+        {
+            timeTracker = Time.time + 0.5f;
+            phaseInitialized = true;
+        }
+        Color tempHolder = fadeScene.color;
+        tempHolder.a += 2.0f * Time.deltaTime;
+        fadeScene.color = tempHolder;
+        if (Time.time > timeTracker)
+        {
+            tempHolder = fadeScene.color;
+            tempHolder.a = 1.0f;
+            art.sprite = art2;
+            fadeScene.color = tempHolder;
+            phaseInitialized = false;
+            tracker++;
+        }
+    }
+
+    public void secondStoryFadeIn()
+    {
+        if (phaseInitialized == false)
+        {
+            timeTracker = Time.time + 0.5f;
+            phaseInitialized = true;
+        }
+        Color tempHolder = fadeScene.color;
+        tempHolder.a -= 2.0f * Time.deltaTime;
+        fadeScene.color = tempHolder;
+        if (Time.time > timeTracker)
+        {
+            tempHolder = fadeScene.color;
+            tempHolder.a = 0.0f;
+            fadeScene.color = tempHolder;
+            phaseInitialized = false;
+            tracker++;
+        }
+    }
+
+
+    public void secondStory()
+    {
+        if (phaseInitialized == false)
+        {
+            timeTracker = Time.time + 4.0f;
+            phaseInitialized = true;
+        }
+        if (Time.time > timeTracker)
+        {
+            phaseInitialized = false;
+            tracker++;
+        }
+    }
+
+
+    public void secondStoryFadeOut()
+    {
+        if (phaseInitialized == false)
+        {
+            timeTracker = Time.time + 0.5f;
+            phaseInitialized = true;
+        }
+        Color tempHolder = fadeScene.color;
+        tempHolder.a += 2.0f * Time.deltaTime;
+        fadeScene.color = tempHolder;
+        if (Time.time > timeTracker)
+        {
+            tempHolder = fadeScene.color;
+            tempHolder.a = 1.0f;
+            fadeScene.color = tempHolder;
+            phaseInitialized = false;
+            tracker++;
+        }
+    }
+
+
+    public bool run_story_phase()
+    {
+        Debug.Log("Current story progress: " + tracker);
+        if (tracker == 0)
+        {
+            fade_in1();
+        }
+        else if (tracker == 1)
+        {
+            firstStoryPhase();
+        }
+        else if (tracker == 2)
+        {
+            firstStoryFadeOut();
+        }
+        else if (tracker == 3)
+        {
+            secondStoryFadeIn();
+        }
+        else if (tracker == 4)
+        {
+            secondStory();
+        }
+        else if (tracker == 5)
+        {
+            secondStoryFadeOut();
+        }
+        else
+        {
+            return true;
+        }
+        return false;
+    }
+
+    void Start()
+    {
+        GUICam = GetComponent<Camera>();
+        texture_resize(art.gameObject, new Rect(0.0f, 0.0f, 1.0f, 1.0f));
+    }
+}
