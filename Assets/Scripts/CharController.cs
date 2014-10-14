@@ -27,6 +27,7 @@ public class CharController : MonoBehaviour {
 	private float shootTime;
 	public float shootInterval = .5f;
 	public Transform bulletSpawn;
+	public AudioClip audioSource;
 	public GameObject barrel;
 	public GameObject muzzleFlash;
 	
@@ -34,6 +35,8 @@ public class CharController : MonoBehaviour {
 	bool attacking = false;
 	float meleeCD = 1f;
 	float meleeCDTracker;
+	bool animation1, animation2, animation3;
+	
 	
 	public virtual void OnTriggerEnter(Collider collider) {
 		var hit = collider.gameObject.GetComponent<Bullet>();
@@ -50,30 +53,38 @@ public class CharController : MonoBehaviour {
 		mainCamera = (GameObject) GameObject.FindWithTag ("MainCamera");
 		meleeCDTracker = meleeCD + Time.time;
 		maxHP = playerHP;
+		bool animation1 = true, animation2 = true, animation3 = true;
 	}
 	
 	//Update called once per frame
 	void Update() {
-		if (dying == false) {
-			GetInput();
-			LookAtMouse();
-			HandleCamera();
-			Animate ();
-		}
-		else {
+		if (dying) {
 			if (!animation.IsPlaying ("death")) {
 				animation.Stop();
 				dead = true;
 			}
 		}
+		
+		GetInput();
+		LookAtMouse();
+		HandleCamera();
+		FireCheck ();
+		AnimateMove ();
+		
 	}
 	
+	//Fixed Update updates 50 fps. For physics calculations
 	void FixedUpdate () {
-		ProcessMovement();
-		FireCheck();
+		if (!animation.IsPlaying("slashstart")) {
+			ProcessMovement();
+		}
 	}
+	
+	
 	
 //----------------------------------------Functions---------------------------------------------
+
+
 
 	//Sets up the mouse position on screen and rotates body accordingly
 	void GetInput() {
@@ -122,39 +133,47 @@ public class CharController : MonoBehaviour {
 	//Checks to see if left mouse is pressed down. Will fire 1 bullet every shoot interval
 	void FireCheck() {
 		if (Input.GetButton ("Fire1")) {
-		
 			barrel.transform.Rotate(0, 0, 720f * Time.deltaTime);
 			if (Time.time >= shootTime)
 			{ 
 				Object spotlight = Instantiate (muzzleFlash, bulletSpawn.position, bulletSpawn.rotation);
 				Rigidbody bullet = (Rigidbody) Instantiate(bulletPrefab, bulletSpawn.position, bulletSpawn.rotation);
 				bullet.rigidbody.AddForce(transform.forward * bulletSpeed);
+				audio.PlayOneShot(audioSource, 10f);        //bullet sound
 				Physics.IgnoreCollision(bullet.collider, transform.root.collider);    //ignore hero collision
 				shootTime = Time.time + shootInterval;
 			}
 		}
 		if (Input.GetButton ("Fire2")) {
-			if (!attacking) {
-				animation.PlayQueued ("slashstart", QueueMode.PlayNow);
-			}
-			attacking = true;
-			if (attacking && !animation.isPlaying) {
-				animation.PlayQueued ("slashfire", QueueMode.CompleteOthers);
-				
-				Rigidbody bullet = (Rigidbody) Instantiate(bulletPrefab, bulletSpawn.position, bulletSpawn.rotation);
-				bullet.transform.Translate(transform.forward * 5f * Time.deltaTime);
-				Physics.IgnoreCollision(bullet.collider, transform.root.collider);    //ignore hero collision
-				
-				if (!animation.IsPlaying("slashfire")) {
-					animation.PlayQueued ("slashend", QueueMode.CompleteOthers);
-					attacking = false;
-					meleeCDTracker = meleeCD + Time.time;
+			Debug.Log ("Fire2 activated");
+			Debug.Log (meleeCDTracker);
+			Debug.Log (Time.time);
+			if (Time.time > meleeCDTracker) {
+				if (animation1 == true) {
+					Debug.Log ("animation1 played");
+					animation.PlayQueued ("slashstart");
+					animation1 = false;
+				}
+				else if (!animation.IsPlaying ("slashstart") && animation2 == true) {
+					Debug.Log ("animation2 played");
+					animation.CrossFade ("slashfire");
+					Object meleeAttack = Instantiate(melee, bulletSpawn.position, bulletSpawn.rotation);
+					animation2 = false;
+				}
+				else if (!animation.IsPlaying("slashfire") && animation3 == true) {
+					animation.CrossFade ("slashend");
+					if (!animation.IsPlaying("slashend")) {
+						animation1 = true;
+						animation2 = true;
+						animation3 = true;
+						meleeCDTracker = Time.time + meleeCD;
+					}
 				}
 			}
 		}
 	}
 	
-	void Animate() {
+	void AnimateMove() {
 		if (localTransform.z > 0) {
 			animation.CrossFade("moveloop");
 		}
