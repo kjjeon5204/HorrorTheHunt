@@ -1,7 +1,8 @@
 fileFormatVersion: 2
 guid: ebdb04696e7063a43a927f223c11cec4
 TextureImporter:
-  fileIDToRecycleName: {}
+  fileIDToRecycleName:
+    21300000: Story Cinematic_1
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
