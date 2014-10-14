@@ -6,6 +6,7 @@ public class BeginningStoryLogic : MonoBehaviour {
     public Sprite art2;
     public SpriteRenderer art;
     public SpriteRenderer fadeScene;
+    public GameObject skipButton;
     float timeTracker;
     bool phaseInitialized = false;
     int tracker = 0;
@@ -143,9 +144,27 @@ public class BeginningStoryLogic : MonoBehaviour {
         }
     }
 
+    public void input_ui_handler(Vector3 mousePos)
+    {
+        Vector2 mouseWorldPos = GUICam.ScreenToWorldPoint(mousePos);
+        RaycastHit2D hitDetector = Physics2D.Raycast(mouseWorldPos, Vector2.zero);
+        if (hitDetector.collider != null)
+        {
+            if (hitDetector.collider.gameObject == skipButton)
+            {
+                tracker = 5;
+                phaseInitialized = false;
+            }
+        }
+    }
+
 
     public bool run_story_phase()
     {
+        if (Input.GetKeyDown(KeyCode.Mouse0))
+        {
+            input_ui_handler(Input.mousePosition);
+        }
         Debug.Log("Current story progress: " + tracker);
         if (tracker == 0)
         {
