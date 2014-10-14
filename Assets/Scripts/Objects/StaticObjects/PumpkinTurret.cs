@@ -9,6 +9,7 @@ public class PumpkinTurret : NonMovingObject
     public float Range = 20.0f;
     public float BulletForce = 1000.0f;
     public int Damage = 10;
+    public float TurnSpeed = 25.0f;
     public GameObject projectile;
     public GameObject muzzle;
     private GameObject Target = null;
@@ -75,7 +76,7 @@ public class PumpkinTurret : NonMovingObject
         }
         Debug.Log("Trigger Attack");
         var q = Quaternion.LookRotation(Target.transform.position - muzzle.transform.position);
-        muzzle.transform.rotation = Quaternion.RotateTowards(muzzle.transform.rotation, q, 45.0f*Time.deltaTime);
+        muzzle.transform.rotation = Quaternion.RotateTowards(muzzle.transform.rotation, q, TurnSpeed*Time.deltaTime);
         var angle = Quaternion.Angle(q, muzzle.transform.rotation);
         timeSinceLastAttack += Time.deltaTime;
         if (angle < 20.0f && timeSinceLastAttack >= AttackInterval)
