@@ -80,6 +80,7 @@ public class Zombie : Enemy
             state = ZombieState.Attacking;
 
         }
+        
     }
 
     void OnTriggerExit(Collider other)
