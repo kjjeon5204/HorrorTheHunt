@@ -36,7 +36,7 @@ public class CharController : MonoBehaviour {
 	bool attacking = false;
 	float meleeCD = 1f;
 	float meleeCDTracker;
-
+	public GameObject gun;
 	
 	
 	public virtual void OnTriggerEnter(Collider collider) {
@@ -54,6 +54,8 @@ public class CharController : MonoBehaviour {
 		mainCamera = (GameObject) GameObject.FindWithTag ("MainCamera");
 		meleeCDTracker = meleeCD + Time.time;
 		maxHP = playerHP;
+		gun.GetComponent<MeleeWeaponTrail>().Emit = false;
+
 	}
 	
 	//Update called once per frame
@@ -65,6 +67,9 @@ public class CharController : MonoBehaviour {
 			}
 		}
 		if (!animation.IsPlaying("slashfire") && !animation.IsPlaying ("slashend")){
+			if (gun.GetComponent<MeleeWeaponTrail>().Emit == true) {
+				gun.GetComponent<MeleeWeaponTrail>().Emit = false;
+			}
 			LookAtMouse();
 			AnimateMove ();
 		}
@@ -148,7 +153,8 @@ public class CharController : MonoBehaviour {
 		if (Input.GetButton ("Fire2")) {
 			if (Time.time > meleeCDTracker) {
 				animation.Play ("slashfire");
-
+				gun.GetComponent<MeleeWeaponTrail>().Emit = true;
+				
 				Object meleeAttack = Instantiate(melee, bulletSpawn.position + Vector3.forward * 4 + Vector3.right * 3, bulletSpawn.rotation);
 				audio.PlayOneShot(audioSlash, 100f);
 				animation.PlayQueued("slashend");
