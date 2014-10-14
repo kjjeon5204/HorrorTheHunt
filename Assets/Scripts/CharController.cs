@@ -3,6 +3,7 @@ using System.Collections;
 
 public class CharController : MonoBehaviour {
 	public float playerHP;
+	protected bool dying = false;
 	protected bool dead = false;
 
 	public GameObject player;
@@ -46,25 +47,24 @@ public class CharController : MonoBehaviour {
 	
 	//Update called once per frame
 	void Update() {
-		if (dead == true) {
-			Debug.Log ("WITCH DEAD");
-			animation.Play ("death");
-			if (animation.IsPlaying("death") != true) {
-				return;
+		if (dying == false) {
+			GetInput();
+			LookAtMouse();
+			HandleCamera();
+			Animate ();
+		}
+		else {
+			if (!animation.IsPlaying ("death")) {
+				animation.Stop();
+				dead = true;
 			}
 		}
-		GetInput();
-		LookAtMouse();
-		HandleCamera();
-		Animate ();
-		//Lean ();
 	}
 	
 	void FixedUpdate () {
 		ProcessMovement();
 		FireCheck();
 	}
-	
 	
 //----------------------------------------Functions---------------------------------------------
 
@@ -163,13 +163,16 @@ public class CharController : MonoBehaviour {
 		}
 	}
 	*/
-	public void ApplyDamage(int amount)
-	{
+	public void ApplyDamage(int amount) {
 		playerHP -= amount;
-		if (playerHP <= 0)
+		if (playerHP <= 0 && dead == false)
 		{
+			dying = true;
 			animation.Play("death");
-			dead = true;
 		}
+	}
+	
+	public bool IsDead() {
+		return dead;
 	}
 }
