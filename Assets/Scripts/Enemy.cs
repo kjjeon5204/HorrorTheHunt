@@ -25,7 +25,10 @@ public class Enemy : MonoBehaviour
                 currencyGameObj.add_currency(value);
             }
             animation.Play("death");
-            DeathEffect.SetActive(true);
+            if (DeathEffect)
+            {
+                DeathEffect.SetActive(true);
+            }
             dead = true;
         }
     }
