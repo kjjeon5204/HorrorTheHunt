@@ -44,15 +44,28 @@ public class CharController : MonoBehaviour {
 		mainCamera = (GameObject) GameObject.FindWithTag ("MainCamera");
 	}
 	
-	// Update is called once per frame
-	void Update () {
+	//Update called once per frame
+	void Update() {
+		if (dead == true) {
+			Debug.Log ("WITCH DEAD");
+			animation.Play ("death");
+			if (animation.IsPlaying("death") != true) {
+				return;
+			}
+		}
 		GetInput();
-		ProcessMovement();
+		LookAtMouse();
 		HandleCamera();
-		FireCheck();
-		Animate();
+		Animate ();
+		Lean ();
 	}
-
+	
+	void FixedUpdate () {
+		ProcessMovement();
+		FireCheck();
+	}
+	
+	
 //----------------------------------------Functions---------------------------------------------
 
 	//Sets up the mouse position on screen and rotates body accordingly
@@ -87,6 +100,7 @@ public class CharController : MonoBehaviour {
 	
 	//Transforms character based on the inputs
 	void ProcessMovement() {
+		//transform.Translate (localTransform.normalized * movespeed * Time.deltaTime);
 		rigidbody.AddForce (inputMovement.normalized * movespeed * Time.deltaTime);
 		LookAtMouse();
 		transform.position = new Vector3 (transform.position.x, 0 , transform.position.z);
